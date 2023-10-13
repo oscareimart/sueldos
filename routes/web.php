@@ -51,3 +51,5 @@ Route::resource('employees', EmployeesController::class)->middleware(['auth','in
 Route::resource('documents', DocumentsController::class)->middleware(['auth','init.config']);
 Route::resource('bonus', BonusController::class)->middleware(['auth','init.config']);
 Route::resource('discounts', DiscountController::class)->middleware(['auth','init.config']);
+
+Route::post('/importar-csv', [App\Http\Controllers\CSVController::class, 'importarCSV'])->name('importar-csv');
