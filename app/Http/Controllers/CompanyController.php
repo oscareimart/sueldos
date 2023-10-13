@@ -18,7 +18,7 @@ class CompanyController extends Controller
         return view('pages.company.index', [
             'title' => 'Empresas',
             'modules' => $request->modules,
-            'data'=>$allCompanies
+            'data' => $allCompanies
         ]);
     }
 
@@ -30,7 +30,6 @@ class CompanyController extends Controller
      */
     public function create()
     {
-
     }
 
     /**
@@ -45,11 +44,11 @@ class CompanyController extends Controller
         $request->validate([
             'code' => 'unique:companies|required|max:25',
             'document_number' => 'unique:companies|required|max:25',
-            'business_name' => 'required|max:25',
+            'business_name' => 'required',
         ]);
         Company::create($request->all());
         return redirect()->route('companies.index')
-        ->with('success','Empresa Creada');
+            ->with('success', 'Empresa Creada');
     }
 
     /**
