@@ -1,98 +1,96 @@
 @extends('layouts.app1')
 
 @section('content')
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">{{ $title }}</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Business</a></li>
-                            <li class="breadcrumb-item active">{{ $title }}</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">{{ $title }}</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Business</a></li>
+                        <li class="breadcrumb-item active">{{ $title }}</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
 
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <!-- Small boxes (Stat box) -->
-                <div class="row">
-                    <div class="col-12">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-12">
 
-                        <!-- /.card -->
+                    <!-- /.card -->
 
-                        <div class="card">
-                            <div class="card-header">
-                                <button type="button" class="btn btn-success" data-toggle="modal"
-                                    data-target="#modal-create">
-                                    Añadir
-                                </button>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <table id="example1" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Numero</th>
-                                            <th>Codigo</th>
-                                            <th>Nit</th>
-                                            <th>Razon Social</th>
-                                            <th>Fecha Creacion</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (session('success'))
-                                            <div class="alert alert-success alert-dismissible">
-                                                <button type="button" class="close" data-dismiss="alert"
-                                                    aria-hidden="true">&times;</button>
-                                                <h5><i class="icon fas fa-check"></i>Creacion Correcta!</h5>
-                                                {{ session('success') }}
-                                            </div>
-                                        @endif
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger alert-dismissible">
-                                                <button type="button" class="close" data-dismiss="alert"
-                                                    aria-hidden="true">&times;</button>
-                                                <h5><i class="icon fas fa-check"></i>Error al Registrar</h5>
-                                                <ul>
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        @endif
-
-                                        @if ($data)
-                                            @foreach ($data as $key => $emp)
-                                                <tr>
-                                                    <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $emp->code }}</td>
-                                                    <td>{{ $emp->document_number }}</td>
-                                                    <td>{{ $emp->business_name }}</td>
-                                                    <td>{{ $emp->created_at }}</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-warning">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <button type="button" class="btn btn-danger">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                    <div class="card">
+                        <div class="card-header">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-create">
+                                Añadir
+                            </button>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Numero</th>
+                                        <th>Codigo</th>
+                                        <th>Nit</th>
+                                        <th>Razon Social</th>
+                                        <th>Fecha Creacion</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (session('success'))
+                                    <div class="alert alert-success alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <h5><i class="icon fas fa-check"></i>Creacion Correcta!</h5>
+                                        {{ session('success') }}
+                                    </div>
+                                    @endif
+                                    @if ($errors->any())
+                                    <div class="alert alert-danger alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <h5><i class="icon fas fa-check"></i>Error al Registrar</h5>
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
                                             @endforeach
-                                        @else
-                                            no data
-                                        @endif
+                                        </ul>
+                                    </div>
+                                    @endif
 
-                                        {{-- <tr>
+                                    @if ($data)
+                                    @foreach ($data as $key => $emp)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $emp->code }}</td>
+                                        <td>{{ $emp->document_number }}</td>
+                                        <td>{{ $emp->business_name }}</td>
+                                        <td>{{ $emp->created_at }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-danger">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    @else
+                                    no data
+                                    @endif
+
+                                    {{-- <tr>
                                             <td>Trident</td>
                                             <td>Internet
                                                 Explorer 4.0
@@ -102,8 +100,8 @@
                                             <td>X</td>
                                         </tr> --}}
 
-                                    </tbody>
-                                    {{-- <tfoot>
+                                </tbody>
+                                {{-- <tfoot>
                                     <tr>
                                         <th>Rendering engine</th>
                                         <th>Browser</th>
@@ -112,23 +110,23 @@
                                         <th>CSS grade</th>
                                     </tr>
                                 </tfoot> --}}
-                                </table>
-                            </div>
-                            <!-- /.card-body -->
+                            </table>
                         </div>
-                        <!-- /.card -->
+                        <!-- /.card-body -->
                     </div>
-
+                    <!-- /.card -->
                 </div>
-                <!-- /.row -->
-                <!-- Main row -->
 
-                <!-- /.row (main row) -->
-            </div><!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
-    </div>
+            </div>
+            <!-- /.row -->
+            <!-- Main row -->
 
-    @include('pages.company.modal_create')
-    @include('pages.company.scripts')
+            <!-- /.row (main row) -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+@include('pages.company.modal_create')
+@include('pages.company.scripts')
 @endsection

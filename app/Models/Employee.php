@@ -19,5 +19,17 @@ class Employee extends Model
         'gender',
         'position',
         'salary'
+    // protected $fillable = [
+    //     'company_id',
+    //     'document',
+    //     'extention',
+    //     'name',
+    //     'nationality',
+    //     'birthdate',
+    //     'dateofadmission',
+    //     'gender',
+    //     'position',
+    //     'salary',
+
     ];
 }
