@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Company;
 use App\Models\Document;
 
 class DocumentsController extends Controller
@@ -15,9 +16,11 @@ class DocumentsController extends Controller
     public function index(Request $request)
     {
         $allDocuments = Document::paginate(10);
+        $allCompanies = Company::paginate(10);
         return view('pages.documents.index', [
-            'title' => 'Documentos',
+            'title' => 'Planillas',
             'modules' => $request->modules,
+            'companies' => $allCompanies,
             'data' => $allDocuments
         ]);
     }

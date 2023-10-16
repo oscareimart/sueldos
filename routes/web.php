@@ -8,6 +8,9 @@ use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\BonusController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\ParameterController;
+use App\Http\Controllers\DetailSheetController;
+use App\Http\Controllers\CheckSheetController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,12 +25,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-Route::get('/test', function () {
-    return view('test');
-});
+// Route::get('/test', function () {
+//     return view('test');
+// });
 
 Auth::routes();
 
@@ -51,5 +54,8 @@ Route::resource('employees', EmployeesController::class)->middleware(['auth','in
 Route::resource('documents', DocumentsController::class)->middleware(['auth','init.config']);
 Route::resource('bonus', BonusController::class)->middleware(['auth','init.config']);
 Route::resource('discounts', DiscountController::class)->middleware(['auth','init.config']);
+Route::resource('parameters', ParameterController::class)->middleware(['auth','init.config']);
+Route::resource('detailsheets', DetailSheetController::class)->middleware(['auth','init.config']);
+Route::resource('checksheets', CheckSheetController::class)->middleware(['auth','init.config']);
 
 Route::post('/importar-csv', [App\Http\Controllers\CSVController::class, 'importarCSV'])->name('importar-csv');

@@ -41,26 +41,46 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Numero</th>
-                                            <th>Nombre</th>
-                                            <th>Nivel</th>
-                                            <th>Path</th>
-                                            <th>Estado</th>
-                                            <th>Padre</th>
-                                            <th>Acciones</th>
+                                            <th>ID</th>
+                                            <th>CODIGO</th>
+                                            <th>NAME</th>
+                                            <th>FORMULA</th>
+                                            <th>DESCRIPCION</th>
+                                            <th>FECHA CREACION</th>
+                                            {{-- <th>Acciones</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @if (session('success'))
+                                            <div class="alert alert-success alert-dismissible">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-hidden="true">&times;</button>
+                                                <h5><i class="icon fas fa-check"></i>Creacion Correcta!</h5>
+                                                {{ session('success') }}
+                                            </div>
+                                        @endif
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger alert-dismissible">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-hidden="true">&times;</button>
+                                                <h5><i class="icon fas fa-check"></i>Error al Registrar</h5>
+                                                <ul>
+                                                    @foreach ($errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
                                         {{-- {{ $data[0] }} --}}
                                         @if ($data)
-                                            @foreach ($data as $key => $module)
+                                            @foreach ($data as $key => $bonus)
                                                 <tr>
-                                                    <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $module->name }}</td>
-                                                    <td>{{ $module->level }}</td>
-                                                    <td>{{ $module->path }}</td>
-                                                    <td>{{ $module->status }}</td>
-                                                    <td>{{ $module->module_id }}</td>
+                                                    <td>{{ $bonus->id }}</td>
+                                                    <td>{{ $bonus->code }}</td>
+                                                    <td>{{ $bonus->name }}</td>
+                                                    <td>{{ $bonus->recipe }}</td>
+                                                    <td>{{ $bonus->description }}</td>
+                                                    <td>{{ $bonus->created_at }}</td>
                                                     <td>
                                                         <button type="button" class="btn btn-warning">
                                                             <i class="fas fa-edit"></i>
@@ -112,8 +132,7 @@
         </section>
         <!-- /.content -->
     </div>
+    @include('pages.bonus.modal_create')
 @endsection
-
-{{-- @include('pages.empresa.modal_create') --}}
-
-{{-- @include('pages.empresa.scripts') --}}
+{{--
+@include('pages.bonus.scripts') --}}

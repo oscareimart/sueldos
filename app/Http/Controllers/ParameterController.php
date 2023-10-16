@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Bonus;
 use App\Models\Parameter;
 
-class BonusController extends Controller
+class ParameterController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,13 +14,11 @@ class BonusController extends Controller
      */
     public function index(Request $request)
     {
-        $allBonus = Bonus::paginate(10);
         $allParameters = Parameter::paginate(10);
-        return view('pages.bonus.index', [
-            'title' => 'Bonos',
+        return view('pages.parameters.index', [
+            'title' => 'Parametros',
             'modules' => $request->modules,
-            'data' => $allBonus,
-            'params' => $allParameters
+            'data'=>$allParameters
         ]);
     }
 
@@ -43,22 +40,7 @@ class BonusController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'code' => 'unique:bonuses|required',
-            'name' => 'required|max:25',
-            'recipe' => 'required',
-            'variables' => 'required',
-        ]);
-        // dd($request->all());
-        $bonus = Bonus::create($request->all());
-        // dd($bonus);
-        foreach ($request->variables as $key => $v) {
-            $paramVariable = Parameter::where('code',$v)->get();
-            $bonus->parameters()->attach($paramVariable[0]->id);
-        }
-
-        return redirect()->route('bonus.index')
-            ->with('success', 'Bono Creado');
+        //
     }
 
     /**

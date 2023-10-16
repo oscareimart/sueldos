@@ -80,9 +80,23 @@ class ModuleSeeder extends Seeder
                 'module_id' => 2
             ],
             [
-                'name' => 'Documentos',
+                'name' => 'Planillas',
                 'level' => 1,
                 'path' => '/documents',
+                'icon' => 'far fa-circle nav-icon',
+                'module_id' => 2
+            ],
+            [
+                'name' => 'Detalle Planilla',
+                'level' => 1,
+                'path' => '/detailsheets',
+                'icon' => 'far fa-circle nav-icon',
+                'module_id' => 2
+            ],
+            [
+                'name' => 'Validacion de Planilla',
+                'level' => 1,
+                'path' => '/checksheets',
                 'icon' => 'far fa-circle nav-icon',
                 'module_id' => 2
             ],

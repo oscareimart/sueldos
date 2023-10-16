@@ -41,24 +41,45 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Numero</th>
-                                            <th>Nombre</th>
-                                            <th>Path</th>
-                                            <th>Estado</th>
-                                            <th>Empresa</th>
-                                            <th>Acciones</th>
+                                            <th>ID</th>
+                                            <th>NOMBRE</th>
+                                            <th>PATH</th>
+                                            <th>YEAR</th>
+                                            <th>MONTH</th>
+                                            <th>EMPRESA</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @if (session('success'))
+                                            <div class="alert alert-success alert-dismissible">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-hidden="true">&times;</button>
+                                                <h5><i class="icon fas fa-check"></i>Creacion Correcta!</h5>
+                                                {{ session('success') }}
+                                            </div>
+                                        @endif
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger alert-dismissible">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-hidden="true">&times;</button>
+                                                <h5><i class="icon fas fa-check"></i>Error al Registrar</h5>
+                                                <ul>
+                                                    @foreach ($errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
                                         {{-- {{ $data[0] }} --}}
                                         @if ($data)
                                             @foreach ($data as $key => $module)
                                                 <tr>
-                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $module->id }}</td>
                                                     <td>{{ $module->name }}</td>
                                                     <td>{{ $module->path }}</td>
-                                                    <td>{{ $module->status }}</td>
-                                                    <td>{{ $module->empresa_id }}</td>
+                                                    <td>{{ $module->year }}</td>
+                                                    <td>{{ $module->month }}</td>
+                                                    <td>{{ $module->company_id }}</td>
                                                     <td>
                                                         <button type="button" class="btn btn-warning">
                                                             <i class="fas fa-edit"></i>
@@ -110,8 +131,7 @@
         </section>
         <!-- /.content -->
     </div>
+    @include('pages.documents.modal_create')
+
+    @include('pages.documents.scripts')
 @endsection
-
-@include('pages.documents.modal_create')
-
-{{-- @include('pages.empresa.scripts') --}}

@@ -23,7 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->date('admission_date');
             $table->boolean('gender');
             $table->string('position');
-            $table->double('salary');
+            $table->double('salary',8, 2);
 
             $table->unsignedBigInteger('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('companies');

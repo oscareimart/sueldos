@@ -18,18 +18,12 @@ class Employee extends Model
         'admission_date',
         'gender',
         'position',
-        'salary'
-    // protected $fillable = [
-    //     'company_id',
-    //     'document',
-    //     'extention',
-    //     'name',
-    //     'nationality',
-    //     'birthdate',
-    //     'dateofadmission',
-    //     'gender',
-    //     'position',
-    //     'salary',
-
+        'salary',
+        'company_id'
     ];
+
+    public function parameters()//: BelongsToMany
+    {
+        return $this->belongsToMany(Parameter::class, 'detailsheets', 'employee_id', 'parameter_id')->withPivot('value','document_id');
+    }
 }

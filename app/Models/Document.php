@@ -11,7 +11,14 @@ class Document extends Model
     protected $fillable = [
         'name',
         'path',
+        'year',
+        'month',
         'status',
+        'json',
         'empresa_id'
     ];
+    // public function parameters()//: BelongsToMany
+    // {
+    //     return $this->belongsToMany(Parameter::class, 'detailbonus', 'bonus_id', 'parameter_id');
+    // }
 }

@@ -11,7 +11,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Empleados</a></li>
+                            <li class="breadcrumb-item"><a href="#">Empresas</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -42,15 +42,9 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>EMPRESA</th>
-                                            <th>NOMBRE EMPLEADO</th>
-                                            <th>CI</th>
-                                            <th>NACIONALIDAD</th>
-                                            <th>FECHA NACIMIENTO</th>
-                                            <th>FECHA INGRESO</th>
-                                            <th>GENERO</th>
-                                            <th>CARGO</th>
-                                            <th>HABER BASICO</th>
+                                            <th>EMPLEADO</th>
+                                            <th>PARAMETRO</th>
+                                            <th>VALOR</th>
                                             <th>ACCIONES</th>
 
                                         </tr>
@@ -78,20 +72,17 @@
                                         @endif
                                         {{-- {{ $data[0] }} --}}
                                         @if ($data)
-                                            @foreach ($data as $key => $employee)
+                                            @foreach ($data as $key => $param)
                                                 <tr>
 
-                                                    <td>{{ $employee->id }}</td>
-                                                    <td>{{ App\Models\Company::find($employee->company_id)->business_name }}
-                                                    </td>
-                                                    <td>{{ $employee->name }}</td>
-                                                    <td>{{ $employee->document }}</td>
-                                                    <td>{{ $employee->nationality }}</td>
-                                                    <td>{{ $employee->birthdate }}</td>
-                                                    <td>{{ $employee->admission_date }}</td>
-                                                    <td>{{ $employee->gender == 1 ? 'Masculino' : 'Femenino' }}</td>
-                                                    <td>{{ $employee->position }}</td>
-                                                    <td>{{ $employee->salary }}</td>
+                                                    <td>{{ $param->id }}</td>
+                                                    <td>{{ App\Models\Employee::find($param->employee_id)->name }}</td>
+                                                    <td>{{ App\Models\Parameter::find($param->parameter_id)->code }}</td>
+                                                    <td>{{ $param->value }}</td>
+
+                                                    {{-- <td>{{ $param->gender == 1 ? 'Masculino' : 'Femenino' }}</td>
+                                                    <td>{{ $param->position }}</td>
+                                                    <td>{{ $param->salary }}</td> --}}
                                                     <td>
                                                         <button type="button" class="btn btn-warning">
                                                             <i class="fas fa-edit"></i>
@@ -145,6 +136,6 @@
         <!-- /.content -->
     </div>
 
-    @include('pages.employees.modal_create')
-    @include('pages.employees.scripts')
+    {{-- @include('pages.employees.modal_create')
+    @include('pages.employees.scripts') --}}
 @endsection

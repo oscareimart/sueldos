@@ -193,10 +193,10 @@
 
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+            <strong>Copyright &copy; 2023-2024 <a href="https://oscart.com">OscarT.com</a>.</strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 3.2.0
+                <b>Version</b> 1.0.0
             </div>
         </footer>
 
@@ -242,6 +242,28 @@
     {{-- <script src="dist/js/demo.js"></script> --}}
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
+
+    <!-- jQuery -->
+    {{-- <script src="plugins/jquery/jquery.min.js"></script> --}}
+    <!-- Select2 -->
+    <script src="plugins/select2/js/select2.full.min.js"></script>
+    <script>
+        $(function() {
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+            $('.toastsDefaultWarning').click(function() {
+                $(document).Toasts('create', {
+                    class: 'bg-warning',
+                    title: 'Verificacion de Normativa',
+                    // subtitle: 'Subtitle',
+                    body: 'Revisar el capiturlo IV, articulo 55 de la ley General del Trabajo.'
+                })
+            });
+        })
+    </script>
+
 </body>
 
 </html>
