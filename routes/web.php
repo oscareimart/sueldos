@@ -58,4 +58,6 @@ Route::resource('parameters', ParameterController::class)->middleware(['auth','i
 Route::resource('detailsheets', DetailSheetController::class)->middleware(['auth','init.config']);
 Route::resource('checksheets', CheckSheetController::class)->middleware(['auth','init.config']);
 
+Route::post('/checksheets-loaddata', [App\Http\Controllers\CheckSheetController::class, 'loadData'])->name('loadData')->middleware(['auth','init.config']);
+
 Route::post('/importar-csv', [App\Http\Controllers\CSVController::class, 'importarCSV'])->name('importar-csv');

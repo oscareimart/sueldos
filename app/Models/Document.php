@@ -15,7 +15,7 @@ class Document extends Model
         'month',
         'status',
         'json',
-        'empresa_id'
+        'company_id'
     ];
     // public function parameters()//: BelongsToMany
     // {

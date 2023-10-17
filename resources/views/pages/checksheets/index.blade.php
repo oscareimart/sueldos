@@ -28,51 +28,56 @@
 
                         <!-- Profile Image -->
                         <div class="card card-primary card-outline">
-                            <div class="card-body box-profile">
-                                {{-- <div class="text-center">
+                            <form action="{{ route('loadData') }}" method="POST">
+                                @csrf
+                                <div class="card-body box-profile">
+                                    {{-- <div class="text-center">
                                     <img class="profile-user-img img-fluid img-circle"
                                         src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
                                 </div> --}}
 
-                                <h3 class="profile-username text-center">Parametros de Verificacion</h3>
+                                    <h3 class="profile-username text-center">Parametros de Verificacion</h3>
 
-                                <p class="text-muted text-center">Configuracion</p>
+                                    <p class="text-muted text-center">Configuracion</p>
 
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Seleccione Empresa</label>
-                                                <select name="company_id" id="company_id" class="form-control select2bs4"
-                                                    style="width: 100%;">
-                                                    @foreach ($companies as $comp)
-                                                        <option value="{{ $comp->id }}">
-                                                            {{ $comp->business_name }}
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
 
-                                                        </option>
-                                                    @endforeach
+                                                <div class="form-group">
+                                                    <label>Seleccione Empresa</label>
+                                                    <select name="company_id" id="company_id"
+                                                        class="form-control select2bs4" style="width: 100%;">
+                                                        @foreach ($companies as $comp)
+                                                            <option value="{{ $comp->id }}">
+                                                                {{ $comp->business_name }}
 
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Seleccione Planilla</label>
-                                                <select name="document_id" id="document_id" class="form-control select2bs4"
-                                                    style="width: 100%;">
-                                                    @foreach ($documents as $doc)
-                                                        <option value="{{ $doc->id }}">
-                                                            {{ $doc->name }}
+                                                            </option>
+                                                        @endforeach
 
-                                                        </option>
-                                                    @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Seleccione Planilla</label>
+                                                    <select name="document_id" id="document_id"
+                                                        class="form-control select2bs4" style="width: 100%;">
+                                                        @foreach ($documents as $doc)
+                                                            <option value="{{ $doc->id }}">
+                                                                {{ $doc->name }}
 
-                                                </select>
+                                                            </option>
+                                                        @endforeach
+
+                                                    </select>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <a href="#" class="btn btn-primary btn-block"><b>Verificar</b></a>
-                            </div>
+                                    <button type="submit" class="btn btn-primary btn-block"><b>Verificar</b></button>
+                                </div>
+                            </form>
                             <!-- /.card-body -->
                         </div>
                     </div>
@@ -95,7 +100,7 @@
                                 <div class="tab-content">
                                     <div class="active tab-pane" id="sheetCsvTab">
                                         <div class="card-body">
-                                            <table id="example1" class="table table-bordered table-striped">
+                                            <table id="example1_" class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th>NRO</th>
@@ -131,7 +136,7 @@
                                                         </div>
                                                     @endif
                                                     {{-- {{ $data[0] }} --}}
-                                                    @if ($documentCsv)
+                                                    @if (isset($documentCsv))
                                                         @foreach ($documentCsv as $key => $emp)
                                                             <tr>
 
@@ -157,7 +162,7 @@
                                     <div class="tab-pane" id="sheetSysTab">
                                         <!-- The timeline -->
                                         <div class="card-body">
-                                            <table id="example1" class="table table-bordered table-striped">
+                                            <table id="example1__" class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
@@ -193,7 +198,7 @@
                                                         </div>
                                                     @endif
                                                     {{-- {{ $data[0] }} --}}
-                                                    @if ($data)
+                                                    @if (isset($data))
                                                         @foreach ($data as $key => $emp)
                                                             <tr>
 
@@ -225,23 +230,57 @@
                                                 </h3>
                                             </div>
                                             <!-- /.card-header -->
-                                            <div class="card-body">
-                                                <ol>
+                                            {{-- <div class="card-body"> --}}
+                                            {{-- <ol>
                                                     @foreach ($errorsSheet as $es)
                                                         <li class="text-danger">{{ $es }}
                                                             <a href="#" class="toastsDefaultWarning">Ver
-                                                                Normativa</a>
-                                                            {{-- <button
+                                                                Normativa</a> --}}
+                                            {{-- <button
                                                             type="button" class="btn btn-warning toastsDefaultWarning">
                                                             Launch Warning Toast
                                                         </button> --}}
-                                                        </li>
-                                                    @endforeach
-                                                    {{-- <li>Bono Horas extras Observado, Empleado: xxx, <a
+                                            {{-- </li>
+                                                    @endforeach --}}
+                                            {{-- <li>Bono Horas extras Observado, Empleado: xxx, <a
                                                             href="https://pdfobject.com/pdf/sample.pdf" target="_blank">Ver
                                                             Normativa</a></li>
                                                     <li>Bono Domingos Trabajados Observado, Empleado: xxx</li> --}}
-                                                </ol>
+                                            {{-- </ol> --}}
+                                            {{-- </div> --}}
+                                            <div class="card-body">
+                                                <table id="example1" class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Nro</th>
+                                                            <th>Detalle</th>
+                                                            <th>Normativa</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (isset($errorsSheet))
+                                                            @foreach ($errorsSheet as $key => $es)
+                                                                <tr>
+                                                                    <td>{{ $key + 1 }}</td>
+                                                                    <td>{{ $es }}</td>
+                                                                    <td><a href="http://www.silep.gob.bo/norma/4204/texto_ordenado"
+                                                                            target="_blank"
+                                                                            class="toastsDefaultWarning">Ver
+                                                                            Normativa</a></td>
+                                                                    {{-- <td>Internet
+                                                                Explorer 4.0
+                                                            </td>
+                                                            <td>Win 95+</td>
+                                                            <td> 4</td>
+                                                            <td>X</td> --}}
+                                                                </tr>
+                                                            @endforeach
+                                                        @else
+                                                            no data
+                                                        @endif
+                                                    </tbody>
+                                                </table>
                                             </div>
                                             <!-- /.card-body -->
                                         </div>
