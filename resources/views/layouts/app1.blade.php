@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     @include('components.head')
@@ -14,7 +15,8 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="dist/img/AdminLTELogo.jpg" alt="AdminLTELogo" height="100" width="100">
+            <img class="animation__shake" src="dist/img/AdminLTELogo.jpg" alt="AdminLTELogo" height="100"
+                width="100">
         </div>
 
         <!-- Navbar -->
@@ -261,6 +263,11 @@
     <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script>
+        // $(document).ready(function() {
+        //     genReport() {
+        //         console.log('ok');
+        //     }
+        // })
         $(function() {
             //Initialize Select2 Elements
             $('.select2bs4').select2({
@@ -314,6 +321,53 @@
                 "autoWidth": false,
                 "responsive": true,
             });
+
+            function base64ToArrayBuffer(base64) {
+                var binaryString = window.atob(base64);
+                var binaryLen = binaryString.length;
+                var bytes = new Uint8Array(binaryLen);
+                for (var i = 0; i < binaryLen; i++) {
+                    var ascii = binaryString.charCodeAt(i);
+                    bytes[i] = ascii;
+                }
+                return bytes.buffer;
+            }
+            $('#btnReport').click(() => {
+                const company_id = $('#company_id').val();
+                const document_id = $('#document_id').val();
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: 'generatePdf',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        company_id,
+                        document_id
+                    },
+                    success: function(response) {
+                        // Handle the response from the controller method
+                        console.log(response);
+                        if (response && response.pdf) {
+                            var blob = new Blob([base64ToArrayBuffer(response.pdf)], {
+                                type: 'application/pdf'
+                            });
+                            var url = window.URL.createObjectURL(blob);
+                            var a = document.createElement('a');
+                            a.href = url;
+                            a.download = 'reporte.pdf';
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            })
+
         })
     </script>
 

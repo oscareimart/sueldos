@@ -61,3 +61,4 @@ Route::resource('checksheets', CheckSheetController::class)->middleware(['auth',
 Route::post('/checksheets-loaddata', [App\Http\Controllers\CheckSheetController::class, 'loadData'])->name('loadData')->middleware(['auth','init.config']);
 
 Route::post('/importar-csv', [App\Http\Controllers\CSVController::class, 'importarCSV'])->name('importar-csv');
+Route::post('/generatePdf', [App\Http\Controllers\DomPdfController::class, 'generatePDF'])->name('generatePDF');

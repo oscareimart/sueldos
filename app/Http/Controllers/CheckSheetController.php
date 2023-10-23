@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class CheckSheetController extends Controller
 {
+
+    public $allDetailJson;
     /**
      * Display a listing of the resource.
      *
@@ -17,85 +19,6 @@ class CheckSheetController extends Controller
      */
     public function index(Request $request)
     {
-        // $getSheetbyMonth = Company::all();
-        // $allDetail = DB::table('documents')//->get();
-        //     ->join('detailsheets', 'documents.id', '=', 'detailsheets.document_id')
-        //     ->join('employees', 'detailsheets.employee_id', '=', 'employees.id')
-        //     ->select('employees.id',
-        //     'employees.name',
-        //     'employees.document',
-        //     'employees.extension',
-        //     'employees.nationality',
-        //     'employees.birthdate',
-        //     'employees.admission_date',
-        //     'employees.gender',
-        //     'employees.position',
-        //     'employees.salary',
-        //     'employees.company_id')
-        //     ->selectRaw('max(case when `detailsheets`.parameter_id = 1 then `detailsheets`.value end) as HE')
-        //     ->selectRaw('max(case when `detailsheets`.parameter_id = 2 then `detailsheets`.value end) as HB')
-        //     ->groupBy('employees.id',
-        //     'employees.name',
-        //     'employees.document',
-        //     'employees.extension',
-        //     'employees.nationality',
-        //     'employees.birthdate',
-        //     'employees.admission_date',
-        //     'employees.gender',
-        //     'employees.position',
-        //     'employees.salary',
-        //     'employees.company_id')
-        //     ->get();
-
-        // $allDetailJson = DB::table('documents')->select('json')->get();
-        // $allDetailJson = json_decode($allDetailJson[0]->json);
-        // // dd($allDetailJson);
-
-        // foreach ($allDetail as $key => $d) {
-        //     $v = [];
-        //     $bonus = Bonus::where('code','BHE')->get();
-        //     $bonusParams = Bonus::find($bonus[0]->id)->parameters()->get();
-        //     foreach ($bonusParams as $i => $bp) {
-        //         if(is_null($bp->value)){
-        //             switch ($bp->code) {
-        //                 case 'HE':
-        //                     $v += [$bp->code => $d->HE];
-        //                     break;
-
-        //                 case 'HBE':
-        //                     $v += [$bp->code => $d->HB];
-        //                     break;
-
-        //                 default:
-        //                     # code...
-        //                     break;
-        //             }
-        //         }else{
-        //             $v += [$bp->code => $bp->value];
-        //         }
-
-        //     }
-        //     $newRecipe = $bonus[0]->recipe;
-        //     foreach($v as $k => $v_){
-        //         $newRecipe = str_replace($k, $v_, $newRecipe);
-        //     }
-
-        //     $result = eval("return $newRecipe;");
-        //     $d->totalHE = round($result,2);
-
-        // }
-
-
-        // $errorsSheet = [];
-        // foreach ($allDetail as $key => $ds) {
-        //         // if($key == 1){
-        //         //     dd($ds->totalHE, $this->strToDouble($allDetailJson[$key]->IHE));
-        //         // }
-        //         if($ds->totalHE <> $this->strToDouble($allDetailJson[$key]->IHE)){
-        //             $dif = round($ds->totalHE - $this->strToDouble($allDetailJson[$key]->IHE),2);
-        //             array_push($errorsSheet, "Error en Importe Horas Extras(IHE), empleado: ".$ds->name.", diferencia: ".$dif);
-        //         }
-        // }
         $allCompanies = Company::paginate(10);
         $allDocuments = Document::paginate(10);
         return view('pages.checksheets.index', [
@@ -109,7 +32,7 @@ class CheckSheetController extends Controller
         ]);
     }
 
-    public function loadData(Request $request){
+    public function getData(Request $request){
         // dd($request->all());
         $documentFound = Document::find($request->document_id);
         // dd($documentFound->year);
@@ -156,7 +79,7 @@ class CheckSheetController extends Controller
         // dd($allDetail);
 
         // $allDetailJson = DB::table('documents')->select('json')->get();
-        $allDetailJson = json_decode($documentFound->json);
+        $this->allDetailJson = json_decode($documentFound->json);
         // dd($allDetailJson);
         //bonus
         $bonuses = Company::find($request->company_id)->bonuses()->where('type','bonus')->get();
@@ -264,18 +187,179 @@ class CheckSheetController extends Controller
             $d->TD = round($td,2);
             $d->LP = round($d->TG-$td,2);
         }
+        return $allDetail;
+    }
+
+    public function loadData(Request $request){
+        // // dd($request->all());
+        // $documentFound = Document::find($request->document_id);
+        // // dd($documentFound->year);
+        // $allCompanies = Company::paginate(10);
+        // $allDocuments = Document::paginate(10);
+        // $allDetail = DB::table('documents')//->get();
+        //     ->join('detailsheets', 'documents.id', '=', 'detailsheets.document_id')
+        //     ->join('employees', 'detailsheets.employee_id', '=', 'employees.id')
+        //     ->select('employees.id',
+        //     'employees.name',
+        //     'employees.document',
+        //     'employees.extension',
+        //     'employees.nationality',
+        //     'employees.birthdate',
+        //     'employees.admission_date',
+        //     'employees.gender',
+        //     'employees.position',
+        //     'employees.salary',
+        //     'employees.company_id')
+        //     ->selectRaw('max(case when `detailsheets`.parameter_id = 1 then `detailsheets`.value end) as HE')
+        //     ->selectRaw('max(case when `detailsheets`.parameter_id = 2 then `detailsheets`.value end) as HBE')
+        //     ->selectRaw('max(case when `detailsheets`.parameter_id = 3 then `detailsheets`.value end) as DT')
+        //     ->selectRaw('max(case when `detailsheets`.parameter_id = 4 then `detailsheets`.value end) as DIT')
+        //     ->selectRaw('max(case when `detailsheets`.parameter_id = 5 then `detailsheets`.value end) as HRN')
+        //     ->selectRaw('max(case when `detailsheets`.parameter_id = 6 then `detailsheets`.value end) as OT')
+        //     ->selectRaw('max(case when `detailsheets`.parameter_id = 7 then `detailsheets`.value end) as ANT')
+        //     ->selectRaw('max(case when `detailsheets`.parameter_id = 8 then `detailsheets`.value end) as ANS')
+        //     ->where('documents.year', $documentFound->year)
+        //     ->where('documents.month', $documentFound->month)
+        //     ->where('employees.company_id', $request->company_id)
+        //     ->groupBy('employees.id',
+        //     'employees.name',
+        //     'employees.document',
+        //     'employees.extension',
+        //     'employees.nationality',
+        //     'employees.birthdate',
+        //     'employees.admission_date',
+        //     'employees.gender',
+        //     'employees.position',
+        //     'employees.salary',
+        //     'employees.company_id')
+        //     ->get();
+
+        // // dd($allDetail);
+
+        // // $allDetailJson = DB::table('documents')->select('json')->get();
+        // $allDetailJson = json_decode($documentFound->json);
+        // // dd($allDetailJson);
+        // //bonus
+        // $bonuses = Company::find($request->company_id)->bonuses()->where('type','bonus')->get();
+        // // dd($bonuses);
+        // foreach ($allDetail as $key => $d) {
+        //     $tg = 0;
+        //     $v = [];
+        //     // $bonus = Bonus::where('code','BHE')->get();
+        //     foreach ($bonuses as $key => $bonus) {
+        //         $bonusParams = Bonus::find($bonus->id)->parameters()->get();
+        //         foreach ($bonusParams as $i => $bp) {
+        //             if(is_null($bp->value)){
+        //                 switch ($bp->code) {
+        //                     case 'HE':
+        //                         $v += [$bp->code => $d->HE];
+        //                         break;
+
+        //                     case 'HBE':
+        //                         $v += [$bp->code => $d->HBE];
+        //                         break;
+
+        //                     case 'HRN':
+        //                         $v += [$bp->code => $d->HRN];
+        //                         break;
+
+        //                     case 'DT':
+        //                         $v += [$bp->code => $d->DT];
+        //                         break;
+
+        //                     default:
+        //                         # code...
+        //                         break;
+        //                 }
+        //             }else{
+        //                 $v += [$bp->code => $bp->value];
+        //             }
+
+        //         }
+        //         $newRecipe = $bonus->recipe;
+        //         foreach($v as $k => $v_){
+        //             $newRecipe = str_replace($k, $v_, $newRecipe);
+        //         }
+
+        //         $result = eval("return $newRecipe;");
+        //         $tg += $result;
+        //         // $in = 'total'.$bonus->code
+        //         $d->{$bonus->code} = round($result,2);
+
+        //     }
+        //     $d->TG = round($d->HBE + $tg,2);
+
+        //     //descuentos
+        //     $discounts = Company::find($request->company_id)->bonuses()->where('type','discount')->get();
+        //     // dd($bonuses);
+        //     $td = 0;
+        //     $v = [];
+
+        //     foreach ($discounts as $key => $discount) {
+        //         // dd($discount);
+        //         $discountParams = Bonus::find($discount->id)->parameters()->get();
+        //         // dd($discountParams);
+        //         foreach ($discountParams as $i => $dp) {
+        //             if(is_null($dp->value)){
+        //                 switch ($dp->code) {
+        //                     case 'HE':
+        //                         $v += [$dp->code => $d->HE];
+        //                         break;
+
+        //                     case 'HBE':
+        //                         $v += [$dp->code => $d->HBE];
+        //                         break;
+
+        //                     case 'HRN':
+        //                         $v += [$dp->code => $d->HRN];
+        //                         break;
+
+        //                     case 'DT':
+        //                         $v += [$dp->code => $d->DT];
+        //                         break;
+
+        //                     case 'TG':
+        //                         $v += [$dp->code => $d->TG];
+        //                         break;
+
+        //                     default:
+        //                         # code...
+        //                         break;
+        //                 }
+        //             }else{
+        //                 $v += [$dp->code => $dp->value];
+        //             }
+
+        //         }
+        //         $newRecipe = $discount->recipe;
+        //         // dd($v);
+        //         foreach($v as $k => $v_){
+        //             $newRecipe = str_replace($k, $v_, $newRecipe);
+        //         }
+        //         // dd($newRecipe);
+        //         $result = eval("return $newRecipe;");
+        //         $td += $result;
+        //         // $in = 'total'.$discount->code
+        //         $d->{$discount->code} = round($result,2);
+        //     }
+        //     $d->TD = round($td,2);
+        //     $d->LP = round($d->TG-$td,2);
+        // }
 
         // dd($allDetail);
+        $allDetail = $this->getData($request);
+        $allCompanies = Company::all();
+        $allDocuments = Document::all();
         $errorsSheet = [];
-        foreach ($allDetail as $key => $ds) {
-            foreach ($bonuses as $key => $bonus) {
-                if($ds->{$bonus->code} <> $this->strToDouble($allDetailJson[$key]->{$bonus->code})){
-                    $dif = round($ds->{$bonus->code} - $this->strToDouble($allDetailJson[$key]->{$bonus->code}),2);
-                    array_push($errorsSheet, "Error en Importe Horas Extras(IHE), empleado: ".$ds->name.", diferencia: ".$dif);
-                }
-            }
+        // foreach ($allDetail as $key => $ds) {
+        //     foreach ($bonuses as $key => $bonus) {
+        //         if($ds->{$bonus->code} <> $this->strToDouble($allDetailJson[$key]->{$bonus->code})){
+        //             $dif = round($ds->{$bonus->code} - $this->strToDouble($allDetailJson[$key]->{$bonus->code}),2);
+        //             array_push($errorsSheet, "Error en Importe Horas Extras(IHE), empleado: ".$ds->name.", diferencia: ".$dif);
+        //         }
+        //     }
 
-        }
+        // }
 
         return view('pages.checksheets.index', [
             'title' => 'Empresas',
@@ -283,7 +367,7 @@ class CheckSheetController extends Controller
             'data' => $allDetail,
             'companies' => $allCompanies,
             'documents' => $allDocuments,
-            'documentCsv' => $allDetailJson,
+            'documentCsv' => $this->allDetailJson,
             'errorsSheet' => $errorsSheet
         ]);
     }

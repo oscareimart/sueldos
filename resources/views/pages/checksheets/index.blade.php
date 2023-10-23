@@ -75,7 +75,8 @@
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary btn-block"><b>Verificar</b></button>
+                                    <button type="submit" class="btn btn-primary btn-block"
+                                        id="btnCheckSheet"><b>Verificar</b></button>
                                 </div>
                             </form>
                             <!-- /.card-body -->
@@ -236,10 +237,28 @@
                                     <div class="tab-pane" id="sheetResultTab">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h3 class="card-title">
-                                                    <i class="fas fa-text-width"></i>
-                                                    Detalle de Observaciones
-                                                </h3>
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                        <h3 class="card-title">
+                                                            <i class="fas fa-text-width"></i>
+                                                            Detalle de Observaciones
+                                                        </h3>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        {{-- <form action="{{ route('generatePDF') }}" method="POST">
+                                                            @csrf
+                                                            <input type="text" name="jsonReport" id="txtJsonReport"> --}}
+                                                        <button type="button" id="btnReport"
+                                                            class="btn btn-primary btn-block">
+                                                            Generar Reporte
+                                                        </button>
+                                                        {{-- </form> --}}
+
+                                                    </div>
+                                                </div>
+
+
+
                                             </div>
                                             <!-- /.card-header -->
                                             {{-- <div class="card-body"> --}}
