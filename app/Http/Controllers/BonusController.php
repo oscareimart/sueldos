@@ -15,8 +15,8 @@ class BonusController extends Controller
      */
     public function index(Request $request)
     {
-        $allBonus = Bonus::paginate(10);
-        $allParameters = Parameter::paginate(10);
+        $allBonus = Bonus::all()->where('type','bonus');
+        $allParameters = Parameter::all();
         return view('pages.bonus.index', [
             'title' => 'Bonos',
             'modules' => $request->modules,
@@ -50,6 +50,7 @@ class BonusController extends Controller
             'variables' => 'required',
         ]);
         // dd($request->all());
+        $request->type = 'bonus';
         $bonus = Bonus::create($request->all());
         // dd($bonus);
         foreach ($request->variables as $key => $v) {

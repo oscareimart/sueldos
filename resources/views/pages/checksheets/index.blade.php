@@ -24,7 +24,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
 
                         <!-- Profile Image -->
                         <div class="card card-primary card-outline">
@@ -82,7 +82,7 @@
                         </div>
                     </div>
                     <!-- /.col -->
-                    <div class="col-md-9">
+                    <div class="col-md-10">
                         <div class="card">
                             <div class="card-header p-2">
                                 <ul class="nav nav-pills">
@@ -100,7 +100,7 @@
                                 <div class="tab-content">
                                     <div class="active tab-pane" id="sheetCsvTab">
                                         <div class="card-body">
-                                            <table id="example1_" class="table table-bordered table-striped">
+                                            <table id="dataTableScv" class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th>NRO</th>
@@ -111,6 +111,14 @@
                                                         <th>SALARIO</th>
                                                         <th>HORAS EXTRAS</th>
                                                         <th>TOTAL HORAS EXTRAS</th>
+                                                        <th>HORAS RECARGO NOC</th>
+                                                        <th>TOTAL RECARGO NOC</th>
+                                                        <th>DOMINGOS TRABAJADOS</th>
+                                                        <th>TOTAL DOMINGOS TRAB</th>
+                                                        <th>TOTAL GANADO</th>
+                                                        <th>AFP</th>
+                                                        <th>TOTAL DESCUENTO</th>
+                                                        <th>LIQUIDO PAGABLE</th>
 
                                                     </tr>
                                                 </thead>
@@ -147,7 +155,15 @@
                                                                 <td>{{ $emp->nacionalidad }}</td>
                                                                 <td>{{ $emp->HBE }}</td>
                                                                 <td>{{ $emp->HE }}</td>
-                                                                <td>{{ $emp->IHE }}</td>
+                                                                <td>{{ $emp->BHE }}</td>
+                                                                <td>{{ $emp->HRN }}</td>
+                                                                <td>{{ $emp->BRN }}</td>
+                                                                <td>{{ $emp->DT }}</td>
+                                                                <td>{{ $emp->BDT }}</td>
+                                                                <td>{{ $emp->TG }}</td>
+                                                                <td>{{ $emp->DAFP }}</td>
+                                                                <td>{{ $emp->TD }}</td>
+                                                                <td>{{ $emp->LP }}</td>
                                                                 {{-- <td>{{ $emp->totalHE }}</td> --}}
                                                             </tr>
                                                         @endforeach
@@ -162,7 +178,7 @@
                                     <div class="tab-pane" id="sheetSysTab">
                                         <!-- The timeline -->
                                         <div class="card-body">
-                                            <table id="example1__" class="table table-bordered table-striped">
+                                            <table id="dataTableSys" class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
@@ -173,30 +189,18 @@
                                                         <th>SALARIO</th>
                                                         <th>HORAS EXTRAS</th>
                                                         <th>TOTAL HORAS EXTRAS</th>
+                                                        <th>HORAS RECARGO NOC</th>
+                                                        <th>TOTAL RECARGO NOC</th>
+                                                        <th>DOMINGOS TRABAJADOS</th>
+                                                        <th>TOTAL DOMINGOS TRAB</th>
+                                                        <th>TOTAL GANADO</th>
+                                                        <th>AFP</th>
+                                                        <th>TOTAL DESCUENTO</th>
+                                                        <th>LIQUIDO PAGABLE</th>
 
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @if (session('success'))
-                                                        <div class="alert alert-success alert-dismissible">
-                                                            <button type="button" class="close" data-dismiss="alert"
-                                                                aria-hidden="true">&times;</button>
-                                                            <h5><i class="icon fas fa-check"></i>Creacion Correcta!</h5>
-                                                            {{ session('success') }}
-                                                        </div>
-                                                    @endif
-                                                    @if ($errors->any())
-                                                        <div class="alert alert-danger alert-dismissible">
-                                                            <button type="button" class="close" data-dismiss="alert"
-                                                                aria-hidden="true">&times;</button>
-                                                            <h5><i class="icon fas fa-check"></i>Error al Registrar</h5>
-                                                            <ul>
-                                                                @foreach ($errors->all() as $error)
-                                                                    <li>{{ $error }}</li>
-                                                                @endforeach
-                                                            </ul>
-                                                        </div>
-                                                    @endif
                                                     {{-- {{ $data[0] }} --}}
                                                     @if (isset($data))
                                                         @foreach ($data as $key => $emp)
@@ -209,7 +213,15 @@
                                                                 <td>{{ $emp->nationality }}</td>
                                                                 <td>{{ $emp->salary }}</td>
                                                                 <td>{{ $emp->HE }}</td>
-                                                                <td>{{ $emp->totalHE }}</td>
+                                                                <td>{{ $emp->BHE }}</td>
+                                                                <td>{{ $emp->HRN }}</td>
+                                                                <td>{{ $emp->BRN }}</td>
+                                                                <td>{{ $emp->DT }}</td>
+                                                                <td>{{ $emp->BDT }}</td>
+                                                                <td>{{ $emp->TG }}</td>
+                                                                <td>{{ $emp->DAFP }}</td>
+                                                                <td>{{ $emp->TD }}</td>
+                                                                <td>{{ $emp->LP }}</td>
                                                             </tr>
                                                         @endforeach
                                                     @else
@@ -265,8 +277,7 @@
                                                                     <td>{{ $key + 1 }}</td>
                                                                     <td>{{ $es }}</td>
                                                                     <td><a href="http://www.silep.gob.bo/norma/4204/texto_ordenado"
-                                                                            target="_blank"
-                                                                            class="toastsDefaultWarning">Ver
+                                                                            target="_blank" class="toastsDefaultWarning">Ver
                                                                             Normativa</a></td>
                                                                     {{-- <td>Internet
                                                                 Explorer 4.0

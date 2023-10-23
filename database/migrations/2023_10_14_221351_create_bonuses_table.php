@@ -15,10 +15,11 @@ class CreateBonusesTable extends Migration
     {
         Schema::create('bonuses', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
+            $table->string('code')->unique();
             $table->string('name');
             $table->string('recipe');
             $table->string('description')->nullable();
+            $table->enum('type',['bonus','discount'])->default('bonus');
             $table->timestamps();
         });
     }

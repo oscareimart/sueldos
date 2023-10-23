@@ -12,7 +12,8 @@ class Bonus extends Model
         'code',
         'name',
         'recipe',
-        'description'
+        'description',
+        'type'
     ];
 
     public function parameters()//: BelongsToMany

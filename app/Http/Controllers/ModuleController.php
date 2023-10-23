@@ -16,7 +16,7 @@ class ModuleController extends Controller
      */
     public function index(Request $request)
     {
-        $allModules = Module::paginate(10);
+        $allModules = Module::all();
         return view('pages.modules.index', [
             'title' => 'Modules',
             'modules' => $request->modules,

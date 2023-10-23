@@ -13,4 +13,9 @@ class Company extends Model
         'document_number',
         'business_name',
     ];
+
+    public function bonuses()//: BelongsToMany
+    {
+        return $this->belongsToMany(Bonus::class, 'companybonuses', 'company_id', 'bonus_id');
+    }
 }

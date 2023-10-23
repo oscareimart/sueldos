@@ -31,6 +31,24 @@
                             <span id="exampleInputEmail1-error" class="error invalid-feedback">Please enter a email
                                 address</span>
                         </div>
+                        <div class="form-group">
+                            <label>Bonos</label>
+                            <select class="select2bs4" name="bonuses[]" multiple="multiple"
+                                data-placeholder="Select a State" style="width: 100%;">
+                                @foreach ($bonuses as $b)
+                                    <option>{{ $b->code }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Descuentos</label>
+                            <select class="select2bs4" name="discounts[]" multiple="multiple"
+                                data-placeholder="Select a State" style="width: 100%;">
+                                @foreach ($discounts as $d)
+                                    <option>{{ $d->code }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         {{-- <div class="form-group mb-0">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck1">

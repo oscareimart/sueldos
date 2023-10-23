@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Bonus;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -14,11 +15,15 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
+        $allBonus = Bonus::all()->where('type','bonus');
+        $allDiscount = Bonus::all()->where('type','discount');
         $allCompanies = Company::all();
         return view('pages.company.index', [
             'title' => 'Empresas',
             'modules' => $request->modules,
-            'data' => $allCompanies
+            'data' => $allCompanies,
+            'bonuses' => $allBonus,
+            'discounts' => $allDiscount
         ]);
     }
 
@@ -45,8 +50,21 @@ class CompanyController extends Controller
             'code' => 'unique:companies|required|max:25',
             'document_number' => 'unique:companies|required|max:25',
             'business_name' => 'required',
+            'bonuses' => 'required',
+            'discounts' => 'required',
         ]);
-        Company::create($request->all());
+        // dd($request->bonuses);
+        $newCompany = Company::create($request->all());
+        foreach ($request->bonuses as $key => $b) {
+            $bonusFound = Bonus::where('code',$b)->get();
+            // dd($bonusFound->get());
+            $newCompany->bonuses()->attach($bonusFound[0]->id);
+        }
+        foreach ($request->discounts as $key => $b) {
+            $bonusFound = Bonus::where('code',$b)->get();
+            // dd($bonusFound->get());
+            $newCompany->bonuses()->attach($bonusFound[0]->id);
+        }
         return redirect()->route('companies.index')
             ->with('success', 'Empresa Creada');
     }

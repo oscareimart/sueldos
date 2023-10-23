@@ -2,12 +2,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Nuevo Bono</h4>
+                <h4 class="modal-title">Nuevo Descuento</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="bonus" method="POST" enctype="multipart/form-data">
+            <form action="discounts" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
                     <div class="form-group">
