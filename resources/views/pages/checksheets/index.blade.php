@@ -294,7 +294,7 @@
                                                             @foreach ($errorsSheet as $key => $es)
                                                                 <tr>
                                                                     <td>{{ $key + 1 }}</td>
-                                                                    <td>{{ $es }}</td>
+                                                                    <td>{{ $es["obs"] }}</td>
                                                                     <td><a href="http://www.silep.gob.bo/norma/4204/texto_ordenado"
                                                                             target="_blank" class="toastsDefaultWarning">Ver
                                                                             Normativa</a></td>

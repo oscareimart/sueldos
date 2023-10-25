@@ -346,20 +346,44 @@ class CheckSheetController extends Controller
         //     $d->LP = round($d->TG-$td,2);
         // }
 
-        // dd($allDetail);
+
         $allDetail = $this->getData($request);
+        // dd($allDetail);
         $allCompanies = Company::all();
         $allDocuments = Document::all();
         $errorsSheet = [];
-        // foreach ($allDetail as $key => $ds) {
-        //     foreach ($bonuses as $key => $bonus) {
-        //         if($ds->{$bonus->code} <> $this->strToDouble($allDetailJson[$key]->{$bonus->code})){
-        //             $dif = round($ds->{$bonus->code} - $this->strToDouble($allDetailJson[$key]->{$bonus->code}),2);
-        //             array_push($errorsSheet, "Error en Importe Horas Extras(IHE), empleado: ".$ds->name.", diferencia: ".$dif);
-        //         }
-        //     }
 
-        // }
+        foreach ($allDetail as $key => $ds) {
+            foreach ($this->allDetailJson as $key => $bonus) {
+                $keys = array_keys(get_object_vars($bonus));
+                // dd($keys);
+                foreach ($keys as $k => $value) {
+                    // dd($ds);
+                    if(isset($ds->{$value})){
+                        if(is_numeric($ds->{$value})){
+                            // dd($ds->{$value});
+                            // dd($this->allDetailJson[$key]->{$value},$bonus->{$value});
+                            if($bonus->{$value} <> $this->strToDouble($this->allDetailJson[$key]->{$value})){
+                                $dif = round($ds->{$value} - $this->strToDouble($this->allDetailJson[$key]->{$value}),2);
+                                array_push($errorsSheet,[
+                                    "employee_id"=>$ds->id,
+                                    "obs"=> "Error en ". $value .", empleado: ".$ds->name.", diferencia: ".$dif
+                                ]);
+                            }
+                        }
+
+                    }
+
+                }
+
+                // if($ds->{$bonus->code} <> $this->strToDouble($allDetailJson[$key]->{$bonus->code})){
+                //     $dif = round($ds->{$bonus->code} - $this->strToDouble($allDetailJson[$key]->{$bonus->code}),2);
+                //     array_push($errorsSheet, "Error en ". $bonus->code .", empleado: ".$ds->name.", diferencia: ".$dif);
+                // }
+            }
+
+        }
+        // dd($errorsSheet);
 
         return view('pages.checksheets.index', [
             'title' => 'Empresas',
