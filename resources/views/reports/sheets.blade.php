@@ -8,6 +8,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            font-size: 0.9em;
         }
 
         .container {
@@ -79,11 +80,17 @@
                 </thead>
                 <tbody>
 
-                    @foreach ($detail as $d)
+                    @foreach ($employees as $d)
                         <tr>
                             <td>{{ $d->name }}</td>
                             <td>{{ $d->document . $d->extension }}</td>
-                            <td>Error en campos: DT,DTE,EES</td>
+                            <td>
+                                @foreach ($errors as $e)
+                                    @if ($e['employee_id'] == $d->id)
+                                        {{ '- ' . $e['obs'] }}<br>
+                                    @endif
+                                @endforeach
+                            </td>
                         </tr>
                     @endforeach
 

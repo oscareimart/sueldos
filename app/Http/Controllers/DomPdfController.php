@@ -17,30 +17,33 @@ class DomPdfController extends Controller
     public function generatePDF(Request $request)
     {
         // dd($request->all());
-        Log::info($request->all());
+        // Log::info($request->all());
         $companyFound = Company::find($request->company_id);
         $employees = Employee::where('company_id',$request->company_id);
         $document = Document::find($request->document_id);
         $checkSheetController = new CheckSheetController();
         $dataSheet = $checkSheetController->getData($request);
         $dataJson = json_decode($document->json);
-        Log::info($dataJson);
+        // Log::info($employees->get());
+
+        // Log::info(gettype($dataJson));
         $errorsSheet = [];
-        foreach ($allDetail as $key => $ds) {
-            foreach ($this->allDetailJson as $key => $bonus) {
+        foreach ($dataSheet as $key => $ds) {
+            foreach ($dataJson as $key => $bonus) {
+
                 $keys = array_keys(get_object_vars($bonus));
-                // dd($keys);
+                // Log::info($keys);
                 foreach ($keys as $k => $value) {
                     // dd($ds);
                     if(isset($ds->{$value})){
                         if(is_numeric($ds->{$value})){
                             // dd($ds->{$value});
                             // dd($this->allDetailJson[$key]->{$value},$bonus->{$value});
-                            if($bonus->{$value} <> $this->strToDouble($this->allDetailJson[$key]->{$value})){
-                                $dif = round($ds->{$value} - $this->strToDouble($this->allDetailJson[$key]->{$value}),2);
+                            if($bonus->{$value} <> $checkSheetController->strToDouble($dataJson[$key]->{$value})){
+                                $dif = round($ds->{$value} - $checkSheetController->strToDouble($dataJson[$key]->{$value}),2);
                                 array_push($errorsSheet,[
                                     "employee_id"=>$ds->id,
-                                    "obs"=> "Error en ". $value .", empleado: ".$ds->name.", diferencia: ".$dif
+                                    "obs"=> $value .", diferencia: ".$dif
                                 ]);
                             }
                         }
@@ -57,28 +60,42 @@ class DomPdfController extends Controller
 
         }
 
-        foreach ($employees as $key => $emp) {
-            $emp->obs = [];
-            foreach ($errorsSheet as $key => $e) {
-                if($emp->id == $e[0]->employee_id){
-                    $emp->obs += $e[0]->obs;
-                }
+        // Log::info($errorsSheet);
+        // foreach ($employees->get() as $key => $emp) {
+        //     $emp->desss = "";
+        //     foreach ($errorsSheet as $key => $err) {
+        //         // Log::info($err['employee_id']);
+        //         // Log::info($err->employee_id);
+        //         if($emp->id == $err['employee_id']){
+        //             // $emp->obs = "ok";
+        //             // $emp->obs = "- ".$emp->obs."\n".$err['obs'];
+        //             // array_push($emp->obs,$err['obs']);
+        //         }
+        //     }
+        // }
+        // Log::info($employees);
+        // foreach ($employees as $key => $emp) {
+        //     $emp->obs = [];
+        //     foreach ($errorsSheet as $key => $e) {
+        //         if($emp->id == $e[0]->employee_id){
+        //             $emp->obs += $e[0]->obs;
+        //         }
 
-            }
+        //     }
 
-        }
+        // }
 
 
         $data = [
             'title'=>'Reporte Empleados Observados',
             'subtitle'=>$companyFound->business_name,
             'date'=>date('m/d/Y'),
-
-            'detail'=>$dataSheet
+            'employees'=>$employees->get(),
+            'errors'=>$errorsSheet
         ];
 
         // $dataSheet = CheckSheetController::getData($request);
-        Log::info($dataSheet);
+        // Log::info($dataSheet);
         $pdf = PDF::loadView('reports.sheets', $data);
 
         // return $pdf->download('report.pdf');

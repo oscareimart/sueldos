@@ -352,6 +352,7 @@ class CheckSheetController extends Controller
         $allCompanies = Company::all();
         $allDocuments = Document::all();
         $errorsSheet = [];
+        // dd($allDetail,$this->allDetailJson);
 
         foreach ($allDetail as $key => $ds) {
             foreach ($this->allDetailJson as $key => $bonus) {
