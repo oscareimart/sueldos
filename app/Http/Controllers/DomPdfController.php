@@ -33,24 +33,28 @@ class DomPdfController extends Controller
 
                 $keys = array_keys(get_object_vars($bonus));
                 // Log::info($keys);
-                foreach ($keys as $k => $value) {
-                    // dd($ds);
-                    if(isset($ds->{$value})){
-                        if(is_numeric($ds->{$value})){
-                            // dd($ds->{$value});
-                            // dd($this->allDetailJson[$key]->{$value},$bonus->{$value});
-                            if($bonus->{$value} <> $checkSheetController->strToDouble($dataJson[$key]->{$value})){
+                if($ds->document == $bonus->ci){
+                    foreach ($keys as $k => $value) {
+                        // dd($ds);
+                        if(isset($ds->{$value})){
+                            if(is_numeric($ds->{$value})){
+                                // dd($ds->{$value});
+                                // dd($this->allDetailJson[$key]->{$value},$bonus->{$value});
                                 $dif = round($ds->{$value} - $checkSheetController->strToDouble($dataJson[$key]->{$value}),2);
-                                array_push($errorsSheet,[
-                                    "employee_id"=>$ds->id,
-                                    "obs"=> $value .", diferencia: ".$dif
-                                ]);
+                                if($bonus->{$value} <> $checkSheetController->strToDouble($dataJson[$key]->{$value}) && $dif <> 0){
+
+                                    array_push($errorsSheet,[
+                                        "employee_id"=>$ds->id,
+                                        "obs"=> $value.", Sistema: ".$ds->{$value}." , Excel: ".$dataJson[$key]->{$value}.", diferencia: ".$dif
+                                    ]);
+                                }
                             }
+
                         }
 
                     }
-
                 }
+
 
                 // if($ds->{$bonus->code} <> $this->strToDouble($allDetailJson[$key]->{$bonus->code})){
                 //     $dif = round($ds->{$bonus->code} - $this->strToDouble($allDetailJson[$key]->{$bonus->code}),2);
@@ -97,6 +101,8 @@ class DomPdfController extends Controller
         // $dataSheet = CheckSheetController::getData($request);
         // Log::info($dataSheet);
         $pdf = PDF::loadView('reports.sheets', $data);
+        $pdf->setPaper('A4', 'landscape');
+
 
         // return $pdf->download('report.pdf');
         return response()->json(['pdf' => base64_encode($pdf->output())]);

@@ -8,22 +8,22 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: 0.9em;
+            /* font-size: 0.7em; */
         }
 
         .container {
-            max-width: 800px;
+            max-width: 950px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 10px;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .section {
-            margin-bottom: 30px;
+            margin-bottom: 15px;
         }
 
         .section-title {

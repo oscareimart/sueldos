@@ -357,25 +357,29 @@ class CheckSheetController extends Controller
         foreach ($allDetail as $key => $ds) {
             foreach ($this->allDetailJson as $key => $bonus) {
                 $keys = array_keys(get_object_vars($bonus));
-                // dd($keys);
-                foreach ($keys as $k => $value) {
-                    // dd($ds);
-                    if(isset($ds->{$value})){
-                        if(is_numeric($ds->{$value})){
-                            // dd($ds->{$value});
-                            // dd($this->allDetailJson[$key]->{$value},$bonus->{$value});
-                            if($bonus->{$value} <> $this->strToDouble($this->allDetailJson[$key]->{$value})){
+                // dd($ds,$bonus);
+                if($ds->document == $bonus->ci){
+                    foreach ($keys as $k => $value) {
+                        // dd($ds);
+                        if(isset($ds->{$value})){
+                            if(is_numeric($ds->{$value})){
+                                // dd($ds->{$value});
+                                // dd($this->allDetailJson[$key]->{$value},$bonus->{$value});
                                 $dif = round($ds->{$value} - $this->strToDouble($this->allDetailJson[$key]->{$value}),2);
-                                array_push($errorsSheet,[
-                                    "employee_id"=>$ds->id,
-                                    "obs"=> "Error en ". $value .", empleado: ".$ds->name.", diferencia: ".$dif
-                                ]);
+                                if($bonus->{$value} <> $this->strToDouble($this->allDetailJson[$key]->{$value}) && $dif <> 0){
+
+                                    array_push($errorsSheet,[
+                                        "employee_id"=>$ds->id,
+                                        "obs"=> "Error en ". $value .", empleado: ".$ds->name.", diferencia: ".$dif
+                                    ]);
+                                }
                             }
+
                         }
 
                     }
-
                 }
+
 
                 // if($ds->{$bonus->code} <> $this->strToDouble($allDetailJson[$key]->{$bonus->code})){
                 //     $dif = round($ds->{$bonus->code} - $this->strToDouble($allDetailJson[$key]->{$bonus->code}),2);
