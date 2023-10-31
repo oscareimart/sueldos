@@ -24,7 +24,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-12">
 
                         <!-- Profile Image -->
                         <div class="card card-primary card-outline">
@@ -42,7 +42,7 @@
 
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-12">
+                                            <div class="col-md-5">
 
                                                 <div class="form-group">
                                                     <label>Seleccione Empresa</label>
@@ -57,6 +57,8 @@
 
                                                     </select>
                                                 </div>
+                                            </div>
+                                            <div class="col-md-5">
                                                 <div class="form-group">
                                                     <label>Seleccione Planilla</label>
                                                     <select name="document_id" id="document_id"
@@ -72,18 +74,26 @@
                                                 </div>
 
                                             </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary btn-block"
+                                                        id="btnCheckSheet"><b>Verificar</b></button>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary btn-block"
-                                        id="btnCheckSheet"><b>Verificar</b></button>
+
                                 </div>
                             </form>
                             <!-- /.card-body -->
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <!-- /.col -->
-                    <div class="col-md-10">
+                    <div class="col-md-12">
                         <div class="card">
                             <div class="card-header p-2">
                                 <ul class="nav nav-pills">
@@ -104,11 +114,11 @@
                                             <table id="dataTableScv" class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
-                                                        <th>NRO</th>
+                                                        {{-- <th>NRO</th> --}}
                                                         <th>EMPLEADO</th>
                                                         <th>CI</th>
-                                                        <th>EXT</th>
-                                                        <th>NACIONALIDAD</th>
+                                                        {{-- <th>EXT</th> --}}
+                                                        {{-- <th>NACIONALIDAD</th> --}}
                                                         <th>SALARIO</th>
                                                         <th>HORAS EXTRAS</th>
                                                         <th>TOTAL HORAS EXTRAS</th>
@@ -116,6 +126,7 @@
                                                         <th>TOTAL RECARGO NOC</th>
                                                         <th>DOMINGOS TRABAJADOS</th>
                                                         <th>TOTAL DOMINGOS TRAB</th>
+                                                        <th>TOTAL BONO ANTIGUEDAD</th>
                                                         <th>TOTAL GANADO</th>
                                                         <th>AFP</th>
                                                         <th>TOTAL DESCUENTO</th>
@@ -149,11 +160,11 @@
                                                         @foreach ($documentCsv as $key => $emp)
                                                             <tr>
 
-                                                                <td>{{ $key + 1 }}</td>
+                                                                {{-- <td>{{ $key + 1 }}</td> --}}
                                                                 <td>{{ $emp->nombre }}</td>
-                                                                <td>{{ $emp->ci }}</td>
-                                                                <td>{{ $emp->extension }}</td>
-                                                                <td>{{ $emp->nacionalidad }}</td>
+                                                                <td>{{ $emp->ci . $emp->extension }}</td>
+                                                                {{-- <td>{{ $emp->extension }}</td> --}}
+                                                                {{-- <td>{{ $emp->nacionalidad }}</td> --}}
                                                                 <td>{{ $emp->HBE }}</td>
                                                                 <td>{{ $emp->HE }}</td>
                                                                 <td>{{ $emp->BHE }}</td>
@@ -161,6 +172,7 @@
                                                                 <td>{{ $emp->BRN }}</td>
                                                                 <td>{{ $emp->DT }}</td>
                                                                 <td>{{ $emp->BDT }}</td>
+                                                                <td>{{ $emp->BA }}</td>
                                                                 <td>{{ $emp->TG }}</td>
                                                                 <td>{{ $emp->DAFP }}</td>
                                                                 <td>{{ $emp->TD }}</td>
@@ -182,22 +194,60 @@
                                             <table id="dataTableSys" class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
-                                                        <th>ID</th>
+                                                        {{-- <th>ID</th> --}}
                                                         <th>EMPLEADO</th>
                                                         <th>CI</th>
-                                                        <th>EXT</th>
-                                                        <th>NACIONALIDAD</th>
-                                                        <th>SALARIO</th>
-                                                        <th>HORAS EXTRAS</th>
-                                                        <th>TOTAL HORAS EXTRAS</th>
-                                                        <th>HORAS RECARGO NOC</th>
-                                                        <th>TOTAL RECARGO NOC</th>
-                                                        <th>DOMINGOS TRABAJADOS</th>
-                                                        <th>TOTAL DOMINGOS TRAB</th>
-                                                        <th>TOTAL GANADO</th>
-                                                        <th>AFP</th>
-                                                        <th>TOTAL DESCUENTO</th>
-                                                        <th>LIQUIDO PAGABLE</th>
+                                                        {{-- <th>EXT</th> --}}
+                                                        {{-- <th>NACIONALIDAD</th> --}}
+                                                        {{-- <th>SALARIO</th> --}}
+                                                        @if (isset($data[0]->HE))
+                                                            <th>HORAS EXTRAS</th>
+                                                        @endif
+
+                                                        @if (isset($data[0]->BHE))
+                                                            <th>TOTAL HORAS EXTRAS</th>
+                                                        @endif
+
+                                                        @if (isset($data[0]->HRN))
+                                                            <th>HORAS RECARGO NOC</th>
+                                                        @endif
+
+                                                        @if (isset($data[0]->BRN))
+                                                            <th>TOTAL RECARGO NOC</th>
+                                                        @endif
+                                                        @if (isset($data[0]->DT))
+                                                            <th>DOMINGOS TRABAJADOS</th>
+                                                        @endif
+                                                        @if (isset($data[0]->BDT))
+                                                            <th>TOTAL DOMINGOS TRAB</th>
+                                                        @endif
+                                                        {{-- @if (isset($data[0]->AT))
+                                                            <th>AÑOS ANTIGUEDAD</th>
+                                                        @endif
+                                                        @if (isset($data[0]->RS))
+                                                            <th>RANGO SALARIAL</th>
+                                                        @endif --}}
+
+                                                        @if (isset($data[0]->BA))
+                                                            <th>TOTAL BONO ANTIGUEDAD</th>
+                                                        @endif
+
+                                                        @if (isset($data[0]->TG))
+                                                            <th>TOTAL GANADO</th>
+                                                        @endif
+
+                                                        @if (isset($data[0]->DAFP))
+                                                            <th>AFP</th>
+                                                        @endif
+
+                                                        @if (isset($data[0]->TD))
+                                                            <th>TOTAL DESCUENTO</th>
+                                                        @endif
+
+                                                        @if (isset($data[0]->LP))
+                                                            <th>LIQUIDO PAGABLE</th>
+                                                        @endif
+
 
                                                     </tr>
                                                 </thead>
@@ -207,22 +257,59 @@
                                                         @foreach ($data as $key => $emp)
                                                             <tr>
 
-                                                                <td>{{ $emp->id }}</td>
+                                                                {{-- <td>{{ $emp->id }}</td> --}}
                                                                 <td>{{ $emp->name }}</td>
-                                                                <td>{{ $emp->document }}</td>
-                                                                <td>{{ $emp->extension }}</td>
-                                                                <td>{{ $emp->nationality }}</td>
-                                                                <td>{{ $emp->salary }}</td>
-                                                                <td>{{ $emp->HE }}</td>
-                                                                <td>{{ $emp->BHE }}</td>
-                                                                <td>{{ $emp->HRN }}</td>
-                                                                <td>{{ $emp->BRN }}</td>
-                                                                <td>{{ $emp->DT }}</td>
-                                                                <td>{{ $emp->BDT }}</td>
-                                                                <td>{{ $emp->TG }}</td>
-                                                                <td>{{ $emp->DAFP }}</td>
-                                                                <td>{{ $emp->TD }}</td>
-                                                                <td>{{ $emp->LP }}</td>
+                                                                <td>{{ $emp->document . $emp->extension }}</td>
+                                                                {{-- <td>{{ $emp->extension }}</td> --}}
+                                                                {{-- <td>{{ $emp->nationality }}</td> --}}
+                                                                {{-- <td>{{ $emp->salary }}</td> --}}
+                                                                @if (isset($emp->HE))
+                                                                    <td>{{ $emp->HE }}</td>
+                                                                @endif
+
+                                                                @if (isset($emp->BHE))
+                                                                    <td>{{ $emp->BHE }}</td>
+                                                                @endif
+
+                                                                @if (isset($emp->HRN))
+                                                                    <td>{{ $emp->HRN }}</td>
+                                                                @endif
+
+                                                                @if (isset($emp->BRN))
+                                                                    <td>{{ $emp->BRN }}</td>
+                                                                @endif
+                                                                @if (isset($emp->DT))
+                                                                    <td>{{ $emp->DT }}</td>
+                                                                @endif
+
+                                                                @if (isset($emp->BDT))
+                                                                    <td>{{ $emp->BDT }}</td>
+                                                                @endif
+                                                                {{-- @if (isset($emp->AT))
+                                                                    <td>{{ $emp->AT }}</td>
+                                                                @endif
+                                                                @if (isset($emp->RS))
+                                                                    <td>{{ $emp->RS }}</td>
+                                                                @endif --}}
+                                                                @if (isset($emp->BA))
+                                                                    <td>{{ $emp->BA }}</td>
+                                                                @endif
+
+                                                                @if (isset($emp->TG))
+                                                                    <td>{{ $emp->TG }}</td>
+                                                                @endif
+
+                                                                @if (isset($emp->DAFP))
+                                                                    <td>{{ $emp->DAFP }}</td>
+                                                                @endif
+
+                                                                @if (isset($emp->TD))
+                                                                    <td>{{ $emp->TD }}</td>
+                                                                @endif
+                                                                @if (isset($emp->LP))
+                                                                    <td>{{ $emp->LP }}</td>
+                                                                @endif
+
                                                             </tr>
                                                         @endforeach
                                                     @else
@@ -294,9 +381,10 @@
                                                             @foreach ($errorsSheet as $key => $es)
                                                                 <tr>
                                                                     <td>{{ $key + 1 }}</td>
-                                                                    <td>{{ $es["obs"] }}</td>
+                                                                    <td>{{ $es['obs'] }}</td>
                                                                     <td><a href="http://www.silep.gob.bo/norma/4204/texto_ordenado"
-                                                                            target="_blank" class="toastsDefaultWarning">Ver
+                                                                            target="_blank"
+                                                                            class="toastsDefaultWarning">Ver
                                                                             Normativa</a></td>
                                                                     {{-- <td>Internet
                                                                 Explorer 4.0

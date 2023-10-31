@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             ModuleSeeder::class,
             RoleSeeder::class,
             ParameterSeeder::class,
+            SalaryRangeSeeder::class
         ]);
     }
 }

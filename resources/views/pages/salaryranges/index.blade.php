@@ -11,7 +11,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Business</a></li>
+                            <li class="breadcrumb-item"><a href="#">Parametros</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -41,12 +41,13 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Numero</th>
-                                            <th>Codigo</th>
-                                            <th>Nit</th>
-                                            <th>Razon Social</th>
-                                            <th>Fecha Creacion</th>
-                                            <th>Acciones</th>
+                                            <th>ID</th>
+                                            <th>DESDE</th>
+                                            <th>HASTA</th>
+                                            <th>PORCENTAJE</th>
+                                            <th>CATEGORIA</th>
+                                            <th>OPCIONES</th>
+                                            {{-- <th>Acciones</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -70,15 +71,15 @@
                                                 </ul>
                                             </div>
                                         @endif
-
+                                        {{-- {{ $data[0] }} --}}
                                         @if ($data)
-                                            @foreach ($data as $key => $emp)
+                                            @foreach ($data as $key => $sr)
                                                 <tr>
-                                                    <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $emp->code }}</td>
-                                                    <td>{{ $emp->document_number }}</td>
-                                                    <td>{{ $emp->business_name }}</td>
-                                                    <td>{{ $emp->created_at }}</td>
+                                                    <td>{{ $sr->id }}</td>
+                                                    <td>{{ $sr->from }}</td>
+                                                    <td>{{ $sr->to }}</td>
+                                                    <td>{{ $sr->percentage_value }}%</td>
+                                                    <td>{{ $sr->category }}</td>
                                                     <td>
                                                         <button type="button" class="btn btn-warning">
                                                             <i class="fas fa-edit"></i>
@@ -87,6 +88,7 @@
                                                             <i class="fas fa-trash-alt"></i>
                                                         </button>
                                                     </td>
+                                                    {{-- <td>{{ $emp->update_all }}</td> --}}
                                                 </tr>
                                             @endforeach
                                         @else
@@ -129,7 +131,7 @@
         </section>
         <!-- /.content -->
     </div>
-
-    @include('pages.company.modal_create')
-    {{-- @include('pages.company.scripts') --}}
+    {{-- @include('pages.bonus.modal_create') --}}
 @endsection
+{{--
+@include('pages.bonus.scripts') --}}

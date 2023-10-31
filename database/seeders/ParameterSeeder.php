@@ -82,6 +82,18 @@ class ParameterSeeder extends Seeder
                 'category' => 'Variable'
             ],
             [
+                'code' => 'AT',
+                'name' => 'Años Trabajados',
+                'description' => 'Creado por Sistema',
+                'category' => 'Variable'
+            ],
+            [
+                'code' => 'RS',
+                'name' => 'Rango Salarial',
+                'description' => 'Creado por Sistema',
+                'category' => 'Variable'
+            ],
+            [
                 'code' => 'LP',
                 'name' => 'Liquido Pagable',
                 'description' => 'Creado por Sistema',

@@ -8,10 +8,15 @@ use App\Models\Company;
 use App\Models\Parameter;
 use App\Models\Bonus;
 use App\Models\Document;
+use App\Models\SalaryRange;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class CSVController extends Controller
 {
+
+    private $yearWorking;
+
     public function importarCSV(Request $request)
     {
         $request->validate([
@@ -70,12 +75,55 @@ class CSVController extends Controller
                         where('parameter_id',$paramVariable[0]->id);
 
                     if(is_null($paramVariable[0]->value) && $p->count() == 0){
-                        $employee->parameters()->attach($paramVariable[0]->id,
-                        [
-                            'value' => $this->strToDouble($emp[$bp->code]),
-                            'document_id' => $doc->id,
-                        ]
-                    );
+                        switch ($paramVariable[0]->code) {
+                            case 'AT'://años antiguedad
+                                $dateInput = Carbon::createFromFormat('d/m/Y', $emp["FI"]);
+                                // $dateInput = new DateTime($emp["FI"]);
+                                // $today = new DateTime();
+                                $today = Carbon::now();
+                                $diff = $today->diff($dateInput);
+                                $this->yearWorking = $diff->y;
+                                $employee->parameters()->attach($paramVariable[0]->id,
+                                    [
+                                        'value' => $this->yearWorking,
+                                        'document_id' => $doc->id,
+                                    ]
+                                );
+                                // dd($yearWorking);
+                                break;
+
+                            case 'RS'://rango salarial
+                                $salaryRange = SalaryRange::where('to','>=',$this->yearWorking)
+                                    ->where('category','BA')
+                                    ->limit(1)
+                                    ->get();
+
+                                $employee->parameters()->attach($paramVariable[0]->id,
+                                    [
+                                        'value' => $salaryRange[0]->percentage_value,
+                                        'document_id' => $doc->id,
+                                    ]
+                                );
+                                // dd($salaryRange[0]->percentage_value);
+                                break;
+
+                            default://otras variables
+                                $employee->parameters()->attach($paramVariable[0]->id,
+                                    [
+                                        'value' => $this->strToDouble($emp[$bp->code]),
+                                        'document_id' => $doc->id,
+                                    ]
+                                );
+                                break;
+                        }
+
+                            // $employee->parameters()->attach($paramVariable[0]->id,
+                            //     [
+                            //         'value' => $this->strToDouble($emp[$bp->code]),
+                            //         'document_id' => $doc->id,
+                            //     ]
+                            // );
+
                     }
 
                 }

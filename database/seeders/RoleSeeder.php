@@ -29,7 +29,7 @@ class RoleSeeder extends Seeder
         foreach ($rolesDefault as $key => $r) {
             $role = Role::create($r);
             if ($key == 0) {
-                $role->modules()->sync([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]);
+                $role->modules()->sync([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]);
             }else{
                 $role->modules()->sync([1]);
             }

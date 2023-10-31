@@ -11,6 +11,7 @@ use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\DetailSheetController;
 use App\Http\Controllers\CheckSheetController;
+use App\Http\Controllers\SalaryRangesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,8 +58,11 @@ Route::resource('discounts', DiscountController::class)->middleware(['auth','ini
 Route::resource('parameters', ParameterController::class)->middleware(['auth','init.config']);
 Route::resource('detailsheets', DetailSheetController::class)->middleware(['auth','init.config']);
 Route::resource('checksheets', CheckSheetController::class)->middleware(['auth','init.config']);
+Route::resource('salary_ranges', SalaryRangesController::class)->middleware(['auth','init.config']);
 
 Route::post('/checksheets-loaddata', [App\Http\Controllers\CheckSheetController::class, 'loadData'])->name('loadData')->middleware(['auth','init.config']);
 
 Route::post('/importar-csv', [App\Http\Controllers\CSVController::class, 'importarCSV'])->name('importar-csv');
 Route::post('/generatePdf', [App\Http\Controllers\DomPdfController::class, 'generatePDF'])->name('generatePDF');
+
+Route::post('/get-menu', [App\Http\Controllers\RoleController::class, 'getMenu'])->name('get-menu')->middleware(['auth','init.config']);

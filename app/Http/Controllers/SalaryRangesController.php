@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Role;
-use Illuminate\Support\Facades\Auth;
+use App\Models\SalaryRange;
 
-class RoleController extends Controller
+class SalaryRangesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +14,11 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        $allRoles = Role::paginate(10);
-        return view('pages.roles.index', [
-            'title' => 'Roles',
+        $allSalaryRange = SalaryRange::all();
+        return view('pages.salaryranges.index', [
+            'title' => 'Rangos Salariales',
             'modules' => $request->modules,
-            'data'=>$allRoles
+            'data'=> $allSalaryRange
         ]);
     }
 
@@ -31,11 +30,6 @@ class RoleController extends Controller
     public function create()
     {
         //
-    }
-
-    public function getMenu(Request $request){
-
-        return response()->json(['modules' => $request->modules]);
     }
 
     /**

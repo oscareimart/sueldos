@@ -36,6 +36,10 @@ class CheckSheetController extends Controller
         // dd($request->all());
         $documentFound = Document::find($request->document_id);
         // dd($documentFound->year);
+        // $jsonData = json_decode($documentFound->json);
+        // // dd($jsonData);
+        // $fields = array_keys(get_object_vars($jsonData[0]));
+        // dd($fields);
         $allCompanies = Company::paginate(10);
         $allDocuments = Document::paginate(10);
         $allDetail = DB::table('documents')//->get();
@@ -58,8 +62,11 @@ class CheckSheetController extends Controller
             ->selectRaw('max(case when `detailsheets`.parameter_id = 4 then `detailsheets`.value end) as DIT')
             ->selectRaw('max(case when `detailsheets`.parameter_id = 5 then `detailsheets`.value end) as HRN')
             ->selectRaw('max(case when `detailsheets`.parameter_id = 6 then `detailsheets`.value end) as OT')
-            ->selectRaw('max(case when `detailsheets`.parameter_id = 7 then `detailsheets`.value end) as ANT')
-            ->selectRaw('max(case when `detailsheets`.parameter_id = 8 then `detailsheets`.value end) as ANS')
+            ->selectRaw('max(case when `detailsheets`.parameter_id = 7 then `detailsheets`.value end) as FI')
+            ->selectRaw('max(case when `detailsheets`.parameter_id = 8 then `detailsheets`.value end) as ANT')
+            ->selectRaw('max(case when `detailsheets`.parameter_id = 9 then `detailsheets`.value end) as ANS')
+            ->selectRaw('max(case when `detailsheets`.parameter_id = 12 then `detailsheets`.value end) as AT')
+            ->selectRaw('max(case when `detailsheets`.parameter_id = 13 then `detailsheets`.value end) as RS')
             ->where('documents.year', $documentFound->year)
             ->where('documents.month', $documentFound->month)
             ->where('employees.company_id', $request->company_id)
@@ -107,6 +114,14 @@ class CheckSheetController extends Controller
 
                             case 'DT':
                                 $v += [$bp->code => $d->DT];
+                                break;
+
+                            case 'AT':
+                                $v += [$bp->code => $d->AT];
+                                break;
+
+                            case 'RS':
+                                $v += [$bp->code => $d->RS];
                                 break;
 
                             default:
@@ -187,6 +202,7 @@ class CheckSheetController extends Controller
             $d->TD = round($td,2);
             $d->LP = round($d->TG-$td,2);
         }
+        // dd($allDetail);
         return $allDetail;
     }
 
@@ -357,13 +373,16 @@ class CheckSheetController extends Controller
         foreach ($allDetail as $key => $ds) {
             foreach ($this->allDetailJson as $key => $bonus) {
                 $keys = array_keys(get_object_vars($bonus));
-                // dd($ds,$bonus);
+                // dd($ds,$bonus,$keys);
                 if($ds->document == $bonus->ci){
                     foreach ($keys as $k => $value) {
                         // dd($ds);
                         if(isset($ds->{$value})){
                             if(is_numeric($ds->{$value})){
                                 // dd($ds->{$value});
+                                // if(isset($ds->{'BA'})){
+                                //     dd($ds->{'BA'});
+                                // }
                                 // dd($this->allDetailJson[$key]->{$value},$bonus->{$value});
                                 $dif = round($ds->{$value} - $this->strToDouble($this->allDetailJson[$key]->{$value}),2);
                                 if($bonus->{$value} <> $this->strToDouble($this->allDetailJson[$key]->{$value}) && $dif <> 0){

@@ -31,7 +31,7 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                <button type="button" id="btnAddRole" class="btn btn-success" data-toggle="modal"
                                     data-target="#modal-create">
                                     Añadir
                                 </button>
@@ -108,8 +108,9 @@
         </section>
         <!-- /.content -->
     </div>
+    @include('pages.roles.modal_create')
 @endsection
 
-{{-- @include('pages.empresa.modal_create') --}}
+
 
 {{-- @include('pages.empresa.scripts') --}}

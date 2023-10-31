@@ -368,7 +368,95 @@
                 });
             })
 
+
+
+
         })
+    </script>
+    {{-- <script src="http://code.jquery.com/jquery-3.6.1.slim.min.js"></script> --}}
+    <script src="js/jquery.simple-tree-picker.js"></script>
+    <script>
+        // $(function() {
+        $('#btnAddRole').click(() => {
+            console.log('ok');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: 'get-menu',
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    // Handle the response from the controller method
+                    // menu = response.modules
+                    // return response
+                    setMenu(response)
+                    // console.log(menu);
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+
+            });
+            // return menu
+            // console.log(menu.modules);
+            // console.log(menu.responseJSON);
+        })
+        // })
+
+        const setMenu = (menu) => {
+            var demoTreeData = JSON.parse(
+                '{"Number":"KI-125-25","Name":"All","Children":[{"Number":"WA-775-99","Name":"Main House","Children":[{"Number":"JI-105-09","Name":"Downstairs","Children":[]},{"Number":"TR-883-66","Name":"Upstairs","Children":[{"Number":"SS-002-99","Name":"Bedrooms","Children":[{"Number":"JI-656-09","Name":"Master Bedroom","Children":[]},{"Number":"ZZ-654-66","Name":"Guest Bedroom","Children":[]}]},{"Number":"SS-001-99","Name":"Other Rooms","Children":[{"Number":"JI-898-09","Name":"Great Room","Children":[]},{"Number":"ZZ-493-66","Name":"Bonus Room","Children":[]}]}]}]},{"Number":"QQ-542-10","Name":"Garage","Children":[]}]}'
+            );
+            console.log(menu.modules);
+            const modules = menu.modules.map(e => {
+                return {
+                    Number: e.id,
+                    Name: e.name,
+                    Children: e.modules.map(el => {
+                        return {
+                            Number: el.id,
+                            Name: el.name,
+                        }
+                    })
+                }
+            })
+            console.log(modules);
+            // menu
+            // Initialize Simple Tree Picker
+            // Pass it an onclick function to update the view
+            // Pass it an initial selected state
+
+            $('#tree').simpleTreePicker({
+                "tree": {
+                    Number: 0,
+                    Name: "Menu",
+                    Children: modules
+                },
+                "onclick": function() {
+                    var selected = $(".tree").simpleTreePicker("display");
+                    $("#selected").html(!!selected.length ? selected.toString().replace(/,/g, ', ') :
+                        "Nothing Selected");
+                },
+                // "selected": ["0", "1"],
+                "name": "room-selection-tree"
+            });
+
+            // Update view with initial state (onclick isn't called for initial selection)
+            $("#selected").html($(".tree").simpleTreePicker("display").toString().replace(/,/g, ', '));
+        }
+        // Create tree object
+        // let menu = {
+        //     Number: 1,
+        //     Name: "Menu",
+        //     Children: [{
+        //         Number: 2,
+        //         Name: "Dashboard"
+        //     }, {
+        //         Number: 3,
+        //         Name: "Usuarios"
+        //     }]
+        // }
     </script>
 
 </body>

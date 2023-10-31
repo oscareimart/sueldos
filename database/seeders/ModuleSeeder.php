@@ -21,15 +21,27 @@ class ModuleSeeder extends Seeder
                 'icon' => 'nav-icon fas fa-tachometer-alt'
             ],
             [
-                'name' => 'Bussines',
+                'name' => 'Empresas',
                 'level' => 0,
-                'icon' => 'fas fa-user-tie',
+                'icon' => 'fas fa-building',
                 'children' => true
             ],
             [
                 'name' => 'Bonos y Descuentos',
                 'level' => 0,
-                'icon' => 'fas fa-file-invoice-dollar',
+                'icon' => 'fas fa-file-signature',
+                'children' => true
+            ],
+            [
+                'name' => 'Planillas',
+                'level' => 0,
+                'icon' => 'fas fa-file-alt',
+                'children' => true
+            ],
+            [
+                'name' => 'Reportes',
+                'level' => 0,
+                'icon' => 'fas fa-user-tie',
                 'children' => true
             ],
             [
@@ -49,21 +61,21 @@ class ModuleSeeder extends Seeder
                 'level' => 1,
                 'path' => '/roles',
                 'icon' => 'far fa-circle nav-icon',
-                'module_id' => 4
+                'module_id' => 6
             ],
             [
                 'name' => 'Modules',
                 'level' => 1,
                 'path' => '/modules',
                 'icon' => 'far fa-circle nav-icon',
-                'module_id' => 4
+                'module_id' => 6
             ],
             [
                 'name' => 'Usuarios',
                 'level' => 1,
                 'path' => '/users',
                 'icon' => 'far fa-circle nav-icon',
-                'module_id' => 4
+                'module_id' => 6
             ],
             [
                 'name' => 'Empresas',
@@ -84,21 +96,21 @@ class ModuleSeeder extends Seeder
                 'level' => 1,
                 'path' => '/documents',
                 'icon' => 'far fa-circle nav-icon',
-                'module_id' => 2
+                'module_id' => 4
             ],
             [
                 'name' => 'Detalle Planilla',
                 'level' => 1,
                 'path' => '/detailsheets',
                 'icon' => 'far fa-circle nav-icon',
-                'module_id' => 2
+                'module_id' => 4
             ],
             [
                 'name' => 'Validacion de Planilla',
                 'level' => 1,
                 'path' => '/checksheets',
                 'icon' => 'far fa-circle nav-icon',
-                'module_id' => 2
+                'module_id' => 4
             ],
             [
                 'name' => 'Bonos',
@@ -119,7 +131,14 @@ class ModuleSeeder extends Seeder
                 'level' => 1,
                 'path' => '/parameters',
                 'icon' => 'far fa-circle nav-icon',
-                'module_id' => 5
+                'module_id' => 7
+            ],
+            [
+                'name' => 'Rangos Salariales',
+                'level' => 1,
+                'path' => '/salary_ranges',
+                'icon' => 'far fa-circle nav-icon',
+                'module_id' => 7
             ]
         ];
 
