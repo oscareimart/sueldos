@@ -68,6 +68,10 @@ class CSVController extends Controller
             // $bonus = Bonus::where('code','BHE')->get();//bono horas extras
             foreach ($bonuses as $key => $bonus) {
                 $bonusParams = Bonus::find($bonus->id)->parameters()->get();
+                // if($key == 1){
+                //     dd($bonusParams);
+                // }
+
                 foreach ($bonusParams as $key => $bp) {
                     $paramVariable = Parameter::where('code',$bp->code)->get();
                     $p = DB::table('detailsheets')->
@@ -78,8 +82,6 @@ class CSVController extends Controller
                         switch ($paramVariable[0]->code) {
                             case 'AT'://años antiguedad
                                 $dateInput = Carbon::createFromFormat('d/m/Y', $emp["FI"]);
-                                // $dateInput = new DateTime($emp["FI"]);
-                                // $today = new DateTime();
                                 $today = Carbon::now();
                                 $diff = $today->diff($dateInput);
                                 $this->yearWorking = $diff->y;
@@ -93,6 +95,11 @@ class CSVController extends Controller
                                 break;
 
                             case 'RS'://rango salarial
+                                $dateInput = Carbon::createFromFormat('d/m/Y', $emp["FI"]);
+                                $today = Carbon::now();
+                                $diff = $today->diff($dateInput);
+                                $this->yearWorking = $diff->y;
+                                // dd($this->yearWorking);
                                 $salaryRange = SalaryRange::where('to','>=',$this->yearWorking)
                                     ->where('category','BA')
                                     ->limit(1)

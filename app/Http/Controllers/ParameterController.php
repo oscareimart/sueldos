@@ -14,7 +14,7 @@ class ParameterController extends Controller
      */
     public function index(Request $request)
     {
-        $allParameters = Parameter::paginate(10);
+        $allParameters = Parameter::all();
         return view('pages.parameters.index', [
             'title' => 'Parametros',
             'modules' => $request->modules,
