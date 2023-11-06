@@ -64,8 +64,8 @@ class ParameterSeeder extends Seeder
                 'category' => 'Variable'
             ],
             [
-                'code' => 'ANS',
-                'name' => 'Aporte Nacional Solidario',
+                'code' => 'PANS',
+                'name' => 'Porcentaje Aporte Nacional Solidario',
                 'description' => 'Creado por Sistema',
                 'category' => 'Variable'
             ],
@@ -84,6 +84,12 @@ class ParameterSeeder extends Seeder
             [
                 'code' => 'AT',
                 'name' => 'Años Trabajados',
+                'description' => 'Creado por Sistema',
+                'category' => 'Variable'
+            ],
+            [
+                'code' => 'PA',
+                'name' => 'Porcentaje Antiguedad',
                 'description' => 'Creado por Sistema',
                 'category' => 'Variable'
             ],

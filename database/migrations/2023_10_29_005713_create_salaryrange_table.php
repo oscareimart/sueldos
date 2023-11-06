@@ -18,7 +18,8 @@ class CreateSalaryrangeTable extends Migration
             $table->integer('from')->default(0);
             $table->integer('to')->default(0);
             $table->integer('percentage_value')->default(0);
-            $table->enum('category',['BA','ANS'])->default('BA');
+            // $table->enum('category',['BA','ANS'])->default('BA');
+            $table->string('category');
             $table->timestamps();
         });
     }

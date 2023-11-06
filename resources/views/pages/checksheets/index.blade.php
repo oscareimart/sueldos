@@ -197,29 +197,31 @@
                                                         {{-- <th>ID</th> --}}
                                                         <th>EMPLEADO</th>
                                                         <th>CI</th>
+                                                        <th>F INGRESO</th>
+                                                        <th>F NAC</th>
                                                         {{-- <th>EXT</th> --}}
                                                         {{-- <th>NACIONALIDAD</th> --}}
                                                         {{-- <th>SALARIO</th> --}}
                                                         @if (isset($data[0]->HE))
-                                                            <th>HORAS EXTRAS</th>
+                                                            <th>HRS EXT</th>
                                                         @endif
 
                                                         @if (isset($data[0]->BHE))
-                                                            <th>TOTAL HORAS EXTRAS</th>
+                                                            <th>TOT HRS EXT</th>
                                                         @endif
 
                                                         @if (isset($data[0]->HRN))
-                                                            <th>HORAS RECARGO NOC</th>
+                                                            <th>HRS REC NOC</th>
                                                         @endif
 
                                                         @if (isset($data[0]->BRN))
-                                                            <th>TOTAL RECARGO NOC</th>
+                                                            <th>TOT REC NOC</th>
                                                         @endif
                                                         @if (isset($data[0]->DT))
-                                                            <th>DOMINGOS TRABAJADOS</th>
+                                                            <th>DOM TRAB</th>
                                                         @endif
                                                         @if (isset($data[0]->BDT))
-                                                            <th>TOTAL DOMINGOS TRAB</th>
+                                                            <th>TOT DOM TRAB</th>
                                                         @endif
                                                         {{-- @if (isset($data[0]->AT))
                                                             <th>AÑOS ANTIGUEDAD</th>
@@ -229,23 +231,27 @@
                                                         @endif --}}
 
                                                         @if (isset($data[0]->BA))
-                                                            <th>TOTAL BONO ANTIGUEDAD</th>
+                                                            <th>BONO ANT</th>
                                                         @endif
 
                                                         @if (isset($data[0]->TG))
-                                                            <th>TOTAL GANADO</th>
+                                                            <th>TOT GANADO</th>
                                                         @endif
 
                                                         @if (isset($data[0]->DAFP))
                                                             <th>AFP</th>
                                                         @endif
 
+                                                        @if (isset($data[0]->DANS))
+                                                            <th>ANS</th>
+                                                        @endif
+
                                                         @if (isset($data[0]->TD))
-                                                            <th>TOTAL DESCUENTO</th>
+                                                            <th>TOT DESC</th>
                                                         @endif
 
                                                         @if (isset($data[0]->LP))
-                                                            <th>LIQUIDO PAGABLE</th>
+                                                            <th>LIQ PAG</th>
                                                         @endif
 
 
@@ -260,6 +266,8 @@
                                                                 {{-- <td>{{ $emp->id }}</td> --}}
                                                                 <td>{{ $emp->name }}</td>
                                                                 <td>{{ $emp->document . $emp->extension }}</td>
+                                                                <td>{{ $emp->admission_date }}</td>
+                                                                <td>{{ $emp->birthdate }}</td>
                                                                 {{-- <td>{{ $emp->extension }}</td> --}}
                                                                 {{-- <td>{{ $emp->nationality }}</td> --}}
                                                                 {{-- <td>{{ $emp->salary }}</td> --}}
@@ -301,6 +309,10 @@
 
                                                                 @if (isset($emp->DAFP))
                                                                     <td>{{ $emp->DAFP }}</td>
+                                                                @endif
+
+                                                                @if (isset($emp->DANS))
+                                                                    <td>{{ $emp->DANS }}</td>
                                                                 @endif
 
                                                                 @if (isset($emp->TD))

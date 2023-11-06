@@ -45,7 +45,7 @@ class CSVController extends Controller
         $jsond = json_encode($data);
         $dataDoc = $request->all();
         $dataDoc["json"] = $jsond;
-        // dd($jsond);
+        // dd($data);
         $bonuses = Company::find($request->company_id)->bonuses()->get();
         // dd($bonuses);
         $doc = Document::create($dataDoc);
@@ -65,12 +65,24 @@ class CSVController extends Controller
                 "company_id" => $request->company_id
             ];
             $employee = Employee::create($e);
+            //setea fecha ingreso como parametro
+            // $employee->parameters()->attach(7,
+            //     [
+            //         'value' => $this->strToDateFormat($emp["FI"],"Y-m-d"),
+            //         'document_id' => $doc->id,
+            //     ]
+            // );
             // $bonus = Bonus::where('code','BHE')->get();//bono horas extras
             foreach ($bonuses as $key => $bonus) {
                 $bonusParams = Bonus::find($bonus->id)->parameters()->get();
-                // if($key == 1){
-                //     dd($bonusParams);
-                // }
+                if($key == 2){//Haber Basico Empleado
+                    $employee->parameters()->attach(2,
+                        [
+                            'value' => $this->strToDouble($emp["HBE"]),
+                            'document_id' => $doc->id,
+                        ]
+                    );
+                }
 
                 foreach ($bonusParams as $key => $bp) {
                     $paramVariable = Parameter::where('code',$bp->code)->get();
@@ -94,14 +106,14 @@ class CSVController extends Controller
                                 // dd($yearWorking);
                                 break;
 
-                            case 'RS'://rango salarial
+                            case 'PA'://porcentaje antiguedad
                                 $dateInput = Carbon::createFromFormat('d/m/Y', $emp["FI"]);
                                 $today = Carbon::now();
                                 $diff = $today->diff($dateInput);
                                 $this->yearWorking = $diff->y;
                                 // dd($this->yearWorking);
                                 $salaryRange = SalaryRange::where('to','>=',$this->yearWorking)
-                                    ->where('category','BA')
+                                    ->where('category','Bono Antiguedad')
                                     ->limit(1)
                                     ->get();
 
@@ -112,6 +124,29 @@ class CSVController extends Controller
                                     ]
                                 );
                                 // dd($salaryRange[0]->percentage_value);
+                                break;
+
+                            case 'RS'://porcentaje antiguedad
+                                // $dateInput = Carbon::createFromFormat('d/m/Y', $emp["FI"]);
+                                // $today = Carbon::now();
+                                // $diff = $today->diff($dateInput);
+                                // $this->yearWorking = $diff->y;
+                                // // dd($this->yearWorking);
+                                // $salaryRange = SalaryRange::where('to','>=',$this->yearWorking)
+                                //     ->where('category','Bono Antiguedad')
+                                //     ->limit(1)
+                                //     ->get();
+
+                                // $employee->parameters()->attach($paramVariable[0]->id,
+                                //     [
+                                //         'value' => $salaryRange[0]->percentage_value,
+                                //         'document_id' => $doc->id,
+                                //     ]
+                                // );
+                                // dd($salaryRange[0]->percentage_value);
+                                break;
+                            case 'PANS':
+
                                 break;
 
                             default://otras variables
@@ -171,7 +206,14 @@ class CSVController extends Controller
     public function strToDateFormat(String $date, String $format){
         $birthDate = \DateTime::createFromFormat('d/m/Y', $date);// ($date);
         // dd($birthDate);
-        $f = $birthDate->format($format);
+        // dump($birthDate);
+        try {
+            $f = $birthDate->format($format);
+        } catch (\Throwable $th) {
+            dump($th);
+            $f = null;
+        }
+
         // dd($f);
         return $f;
     }
