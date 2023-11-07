@@ -204,12 +204,12 @@ class CheckSheetController extends Controller
                         $salaryRanges = SalaryRange::where('category','Aporte Nacional Solidario')
                             ->orderBy('to','DESC')
                             ->get();
-                        // dd($d->salary);
+                        // dd($d);
                         foreach ($salaryRanges as $key => $sr) {
                             // dd($sr->to);
                             if($d->salary > $sr->to){
                                 // dd($sr->to);
-                                $diff = $d->salary - $sr->to;
+                                $diff = $d->TG - $sr->to;
                                 $pans = $diff*($sr->percentage_value/100);
                                 // dd($tans);
                                 $tans = $tans + $diff*($sr->percentage_value/100);
