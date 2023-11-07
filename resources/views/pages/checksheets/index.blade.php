@@ -199,6 +199,7 @@
                                                         <th>CI</th>
                                                         <th>F INGRESO</th>
                                                         <th>F NAC</th>
+                                                        <th>HABER BASICO</th>
                                                         {{-- <th>EXT</th> --}}
                                                         {{-- <th>NACIONALIDAD</th> --}}
                                                         {{-- <th>SALARIO</th> --}}
@@ -246,6 +247,10 @@
                                                             <th>ANS</th>
                                                         @endif
 
+                                                        @if (isset($data[0]->DJ))
+                                                            <th>DJ</th>
+                                                        @endif
+
                                                         @if (isset($data[0]->TD))
                                                             <th>TOT DESC</th>
                                                         @endif
@@ -268,6 +273,7 @@
                                                                 <td>{{ $emp->document . $emp->extension }}</td>
                                                                 <td>{{ $emp->admission_date }}</td>
                                                                 <td>{{ $emp->birthdate }}</td>
+                                                                <td>{{ $emp->HBE }}</td>
                                                                 {{-- <td>{{ $emp->extension }}</td> --}}
                                                                 {{-- <td>{{ $emp->nationality }}</td> --}}
                                                                 {{-- <td>{{ $emp->salary }}</td> --}}
@@ -313,6 +319,10 @@
 
                                                                 @if (isset($emp->DANS))
                                                                     <td>{{ $emp->DANS }}</td>
+                                                                @endif
+
+                                                                @if (isset($emp->DJ))
+                                                                    <td>{{ $emp->DJ }}</td>
                                                                 @endif
 
                                                                 @if (isset($emp->TD))
