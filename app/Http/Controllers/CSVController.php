@@ -19,163 +19,128 @@ class CSVController extends Controller
 
     public function importarCSV(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'year' => 'required',
-            'month' => 'required',
-            'archivo' => 'required|max:30',// . $request->maxSize,
-            'company_id' => 'required'
-        ]);
-
-
-        // dd($request->company_id);
-        $archivo = $request->file('archivo');
-        $fileContents = file($archivo->getPathname());
-        $fields = explode(';',str_replace("\r\n","",array_shift($fileContents)));
-        $data = [];
-        $content = array_values($fileContents);
-        foreach ($content as $key => $e) {
-            $values = explode(';',str_replace("\r\n","",$e));
-            $arr = [];
-            foreach ($values as $key => $v) {
-                $arr += [$fields[$key] => $v];
-            }
-            array_push($data,$arr);
-        }
-        $jsond = json_encode($data);
-        $dataDoc = $request->all();
-        $dataDoc["json"] = $jsond;
-        // dd($data);
-        $bonuses = Company::find($request->company_id)->bonuses()->get();
-        // dd($bonuses);
-        $doc = Document::create($dataDoc);
-        // $jsone = json_decode($jsond);
-        // dd($doc);
-        foreach ($data as $key => $emp) {
-            $e = [
-                "name" => $emp["nombre"],
-                "document" => $emp["ci"],
-                "extension" => $emp["extension"],
-                "nationality" => $emp["nacionalidad"],
-                "birthdate" => $this->strToDateFormat($emp["fNacimiento"],"Y-m-d"),
-                "admission_date" => $this->strToDateFormat($emp["FI"],"Y-m-d"),
-                "gender" => ($emp["genero"] == "M") ? 1:0,
-                "position" => $emp["cargo"],
-                "salary" => $this->strToDouble($emp["HBE"]),
-                "company_id" => $request->company_id
-            ];
-            $employee = Employee::create($e);
-            //setea fecha ingreso como parametro
-            // $employee->parameters()->attach(7,
-            //     [
-            //         'value' => $this->strToDateFormat($emp["FI"],"Y-m-d"),
-            //         'document_id' => $doc->id,
-            //     ]
-            // );
-            // $bonus = Bonus::where('code','BHE')->get();//bono horas extras
-            foreach ($bonuses as $key => $bonus) {
-                $bonusParams = Bonus::find($bonus->id)->parameters()->get();
-                if($key == 2){//Haber Basico Empleado
-                    $employee->parameters()->attach(2,
-                        [
-                            'value' => $this->strToDouble($emp["HBE"]),
-                            'document_id' => $doc->id,
-                        ]
-                    );
+        try {
+            $request->validate([
+                'name' => 'required',
+                'year' => 'required',
+                'month' => 'required',
+                'archivo' => 'required|max:30',
+                'company_id' => 'required'
+            ]);
+            DB::beginTransaction();
+            $archivo = $request->file('archivo');
+            $fileContents = file($archivo->getPathname());
+            $fields = explode(';',str_replace("\r\n","",array_shift($fileContents)));
+            $data = [];
+            $content = array_values($fileContents);
+            foreach ($content as $key => $e) {
+                $values = explode(';',str_replace("\r\n","",$e));
+                $arr = [];
+                foreach ($values as $key => $v) {
+                    $arr += [$fields[$key] => $v];
                 }
+                array_push($data,$arr);
+            }
+            $jsond = json_encode($data);
+            $dataDoc = $request->all();
+            $dataDoc["json"] = $jsond;
+            $bonuses = Company::find($request->company_id)->bonuses()->get();
+            $doc = Document::create($dataDoc);
+            foreach ($data as $key => $emp) {
+                $e = [
+                    "name" => $emp["nombre"],
+                    "document" => $emp["ci"],
+                    "extension" => $emp["extension"],
+                    "nationality" => $emp["nacionalidad"],
+                    "birthdate" => $this->strToDateFormat($emp["fNacimiento"],"Y-m-d"),
+                    "admission_date" => $this->strToDateFormat($emp["FI"],"Y-m-d"),
+                    "gender" => ($emp["genero"] == "M") ? 1:0,
+                    "position" => $emp["cargo"],
+                    "salary" => $this->strToDouble($emp["HBE"]),
+                    "company_id" => $request->company_id
+                ];
 
-                foreach ($bonusParams as $key => $bp) {
-                    $paramVariable = Parameter::where('code',$bp->code)->get();
-                    $p = DB::table('detailsheets')->
-                        where('employee_id',$employee->id)->
-                        where('parameter_id',$paramVariable[0]->id);
-
-                    if(is_null($paramVariable[0]->value) && $p->count() == 0){
-                        switch ($paramVariable[0]->code) {
-                            case 'AT'://años antiguedad
-                                $dateInput = Carbon::createFromFormat('d/m/Y', $emp["FI"]);
-                                $today = Carbon::now();
-                                $diff = $today->diff($dateInput);
-                                $this->yearWorking = $diff->y;
-                                $employee->parameters()->attach($paramVariable[0]->id,
-                                    [
-                                        'value' => $this->yearWorking,
-                                        'document_id' => $doc->id,
-                                    ]
-                                );
-                                // dd($yearWorking);
-                                break;
-
-                            case 'PA'://porcentaje antiguedad
-                                $dateInput = Carbon::createFromFormat('d/m/Y', $emp["FI"]);
-                                $today = Carbon::now();
-                                $diff = $today->diff($dateInput);
-                                $this->yearWorking = $diff->y;
-                                // dd($this->yearWorking);
-                                $salaryRange = SalaryRange::where('to','>=',$this->yearWorking)
-                                    ->where('category','Bono Antiguedad')
-                                    ->limit(1)
-                                    ->get();
-
-                                $employee->parameters()->attach($paramVariable[0]->id,
-                                    [
-                                        'value' => $salaryRange[0]->percentage_value,
-                                        'document_id' => $doc->id,
-                                    ]
-                                );
-                                // dd($salaryRange[0]->percentage_value);
-                                break;
-
-                            case 'RS'://porcentaje antiguedad
-                                // $dateInput = Carbon::createFromFormat('d/m/Y', $emp["FI"]);
-                                // $today = Carbon::now();
-                                // $diff = $today->diff($dateInput);
-                                // $this->yearWorking = $diff->y;
-                                // // dd($this->yearWorking);
-                                // $salaryRange = SalaryRange::where('to','>=',$this->yearWorking)
-                                //     ->where('category','Bono Antiguedad')
-                                //     ->limit(1)
-                                //     ->get();
-
-                                // $employee->parameters()->attach($paramVariable[0]->id,
-                                //     [
-                                //         'value' => $salaryRange[0]->percentage_value,
-                                //         'document_id' => $doc->id,
-                                //     ]
-                                // );
-                                // dd($salaryRange[0]->percentage_value);
-                                break;
-                            case 'PANS':
-
-                                break;
-
-                            default://otras variables
-                                $employee->parameters()->attach($paramVariable[0]->id,
-                                    [
-                                        'value' => $this->strToDouble($emp[$bp->code]),
-                                        'document_id' => $doc->id,
-                                    ]
-                                );
-                                break;
-                        }
-
-                            // $employee->parameters()->attach($paramVariable[0]->id,
-                            //     [
-                            //         'value' => $this->strToDouble($emp[$bp->code]),
-                            //         'document_id' => $doc->id,
-                            //     ]
-                            // );
-
+                $employee = Employee::create($e);
+                foreach ($bonuses as $key => $bonus) {
+                    $bonusParams = Bonus::find($bonus->id)->parameters()->get();
+                    if($key == 2){//Haber Basico Empleado
+                        $employee->parameters()->attach(2,
+                            [
+                                'value' => $this->strToDouble($emp["HBE"]),
+                                'document_id' => $doc->id,
+                            ]
+                        );
                     }
 
+                    foreach ($bonusParams as $key => $bp) {
+                        $paramVariable = Parameter::where('code',$bp->code)->get();
+                        $p = DB::table('detailsheets')->
+                            where('employee_id',$employee->id)->
+                            where('parameter_id',$paramVariable[0]->id);
+
+                        if(is_null($paramVariable[0]->value) && $p->count() == 0){
+                            switch ($paramVariable[0]->code) {
+                                case 'AT'://años antiguedad
+                                    $dateInput = Carbon::createFromFormat('d/m/Y', $emp["FI"]);
+                                    $today = Carbon::now();
+                                    $diff = $today->diff($dateInput);
+                                    $this->yearWorking = $diff->y;
+                                    $employee->parameters()->attach($paramVariable[0]->id,
+                                        [
+                                            'value' => $this->yearWorking,
+                                            'document_id' => $doc->id,
+                                        ]
+                                    );
+                                    // dd($yearWorking);
+                                    break;
+
+                                case 'PA'://porcentaje antiguedad
+                                    $dateInput = Carbon::createFromFormat('d/m/Y', $emp["FI"]);
+                                    $today = Carbon::now();
+                                    $diff = $today->diff($dateInput);
+                                    $this->yearWorking = $diff->y;
+                                    // dd($this->yearWorking);
+                                    $salaryRange = SalaryRange::where('to','>=',$this->yearWorking)
+                                        ->where('category','Bono Antiguedad')
+                                        ->limit(1)
+                                        ->get();
+
+                                    $employee->parameters()->attach($paramVariable[0]->id,
+                                        [
+                                            'value' => $salaryRange[0]->percentage_value,
+                                            'document_id' => $doc->id,
+                                        ]
+                                    );
+                                    // dd($salaryRange[0]->percentage_value);
+                                    break;
+
+                                case 'RS'://porcentaje antiguedad
+                                    break;
+                                case 'PANS':
+
+                                    break;
+
+                                default://otras variables
+                                    $employee->parameters()->attach($paramVariable[0]->id,
+                                        [
+                                            'value' => $this->strToDouble($emp[$bp->code]),
+                                            'document_id' => $doc->id,
+                                        ]
+                                    );
+                                    break;
+                            }
+                        }
+
+                    }
                 }
             }
-
-
-
-
+            DB::commit();
+            return redirect()->back()->with('success', 'Archivo CSV importado correctamente');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Error al importar el archivo CSV: ' . $th->getMessage());
         }
-        return redirect()->back()->with('success', 'Archivo CSV importado correctamente');
+
     }
 
     // public setRecipeCompanyBonus($employee_id,$company_id){//establece la relacion entre empresa, bonus y parametros
