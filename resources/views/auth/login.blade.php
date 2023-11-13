@@ -77,7 +77,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Log in (v2)</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -88,6 +88,7 @@
     <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="dist/css/login.css">
 </head>
 
 <body class="hold-transition login-page">
@@ -95,7 +96,8 @@
         <!-- /.login-logo -->
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="index2.html" class="h1"><b>Sys</b>Audit</a>
+                <a href="#" class="h1">
+                    <b>Sys</b>Audit</a>
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Sistema de Control de Auditoria</p>
@@ -150,7 +152,7 @@
                 </p> --}}
                 <p class="mb-0">
                     {{-- <a href="register.html" class="text-center">Registrar</a> --}}
-                    <a class="nav-link" href="{{ route('register') }}">{{ __('Registrar') }}</a>
+                    {{-- <a class="nav-link" href="{{ route('register') }}">{{ __('Registrar') }}</a> --}}
                 </p>
             </div>
             <!-- /.card-body -->

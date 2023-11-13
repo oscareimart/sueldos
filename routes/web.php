@@ -12,6 +12,7 @@ use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\DetailSheetController;
 use App\Http\Controllers\CheckSheetController;
 use App\Http\Controllers\SalaryRangesController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,20 +46,23 @@ Route::get('/dashboard', [App\Http\Controllers\DashController::class, 'index'])-
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resource('companies', CompanyController::class)->middleware(['auth','init.config']);
+Route::resource('companies', CompanyController::class)->middleware(['auth','role','init.config']);
 
-Route::resource('roles', RoleController::class)->middleware(['auth','init.config']);
+Route::resource('roles', RoleController::class)->middleware(['auth','role','init.config']);
 
-Route::resource('modules', ModuleController::class)->middleware(['auth','init.config']);
-Route::resource('users', UserController::class)->middleware(['auth','init.config']);
-Route::resource('employees', EmployeesController::class)->middleware(['auth','init.config']);
-Route::resource('documents', DocumentsController::class)->middleware(['auth','init.config']);
-Route::resource('bonus', BonusController::class)->middleware(['auth','init.config']);
-Route::resource('discounts', DiscountController::class)->middleware(['auth','init.config']);
-Route::resource('parameters', ParameterController::class)->middleware(['auth','init.config']);
-Route::resource('detailsheets', DetailSheetController::class)->middleware(['auth','init.config']);
-Route::resource('checksheets', CheckSheetController::class)->middleware(['auth','init.config']);
-Route::resource('salary_ranges', SalaryRangesController::class)->middleware(['auth','init.config']);
+Route::resource('modules', ModuleController::class)->middleware(['auth','role','init.config']);
+Route::resource('users', UserController::class)->middleware(['auth','role','init.config']);
+Route::resource('employees', EmployeesController::class)->middleware(['auth','role','init.config']);
+Route::resource('documents', DocumentsController::class)->middleware(['auth','role','init.config']);
+Route::resource('bonus', BonusController::class)->middleware(['auth','role','init.config']);
+Route::resource('discounts', DiscountController::class)->middleware(['auth','role','init.config']);
+Route::resource('parameters', ParameterController::class)->middleware(['auth','role','init.config']);
+Route::resource('detailsheets', DetailSheetController::class)->middleware(['auth','role','init.config']);
+Route::resource('checksheets', CheckSheetController::class)->middleware(['auth','role','init.config']);
+Route::resource('salary_ranges', SalaryRangesController::class)->middleware(['auth','role','init.config']);
+Route::resource('reports', ReportController::class)->middleware(['auth','role','init.config']);
+
+Route::post('/generate-report', [App\Http\Controllers\ReportController::class, 'genReport'])->name('genReport')->middleware(['auth','init.config']);
 
 Route::post('/checksheets-loaddata', [App\Http\Controllers\CheckSheetController::class, 'loadData'])->name('loadData')->middleware(['auth','init.config']);
 

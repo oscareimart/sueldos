@@ -1,0 +1,7 @@
+body {
+    /* background-image: url("/fondo.avif"); */
+    background-image: url("/fondo.jpg");
+    background-size: cover;
+    background-size: 100% 100%;
+    opacity: 0.8;
+}

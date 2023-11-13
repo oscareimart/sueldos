@@ -438,7 +438,7 @@
                     $("#selected").html(!!selected.length ? selected.toString().replace(/,/g, ', ') :
                         "Nothing Selected");
                 },
-                // "selected": ["0", "1"],
+                "selected": ["1"],
                 "name": "room-selection-tree"
             });
 

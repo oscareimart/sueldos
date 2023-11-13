@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Role;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,14 +17,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        $allUser = User::paginate(10);
+        $allUser = User::all();
+        $allRoles = Role::all();
         $modules = Role::find(Auth::user()->role_id)->modules;
         $mods = $this->getModulesRoles($modules);
         // dd($mods);
         return view('pages.users.index', [
             'title' => 'Usuarios',
             'modules' => $mods,
-            'data' => $allUser
+            'data' => $allUser,
+            'roles' => $allRoles
         ]);
     }
 
@@ -69,7 +72,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role_id' => ['required'],
+        ]);
+        $newUser = $request->all();
+        // dd($newUser["email"]);
+        $newUser["password"] = Hash::make($newUser['password']);
+        // dd($newUser);
+        User::create($newUser);
+        return redirect()->route('users.index')
+            ->with('success', 'Usuario Creado');
+        // dd($request->all());
     }
 
     /**

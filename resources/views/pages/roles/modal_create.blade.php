@@ -7,7 +7,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('importar-csv') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('roles.store') }}" method="POST" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-6">
 
@@ -31,7 +31,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="txtCodigo">Descripcion</label>
-                                <input type="text" name="year" class="form-control" id="document">
+                                <textarea class="form-control" rows="3" name="description" placeholder="Role para ..."></textarea>
+                                {{-- <input type="textarea" name="year" class="form-control" id="document"> --}}
                             </div>
 
                             {{-- <input type="file" name="archivo">

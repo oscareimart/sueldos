@@ -91,6 +91,7 @@ class CheckSheetController extends Controller
         foreach ($allDetail as $key => $d) {
             $tg = 0;
             $v = [];
+            $d->HBE = $d->salary;
             // $bonus = Bonus::where('code','BHE')->get();
             foreach ($bonuses as $key => $bonus) {
                 $bonusParams = Bonus::find($bonus->id)->parameters()->get();

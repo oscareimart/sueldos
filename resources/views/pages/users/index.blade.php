@@ -49,6 +49,26 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @if (session('success'))
+                                            <div class="alert alert-success alert-dismissible">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-hidden="true">&times;</button>
+                                                <h5><i class="icon fas fa-check"></i>Creacion Correcta!</h5>
+                                                {{ session('success') }}
+                                            </div>
+                                        @endif
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger alert-dismissible">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-hidden="true">&times;</button>
+                                                <h5><i class="icon fas fa-check"></i>Error al Registrar</h5>
+                                                <ul>
+                                                    @foreach ($errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
                                         {{-- {{ $data[0] }} --}}
                                         @if ($data)
                                             @foreach ($data as $key => $user)
@@ -108,8 +128,9 @@
         </section>
         <!-- /.content -->
     </div>
+    @include('pages.users.modal_create')
 @endsection
 
-{{-- @include('pages.empresa.modal_create') --}}
+
 
 {{-- @include('pages.empresa.scripts') --}}

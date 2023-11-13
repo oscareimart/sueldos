@@ -100,7 +100,7 @@ class DomPdfController extends Controller
 
         // $dataSheet = CheckSheetController::getData($request);
         // Log::info($dataSheet);
-        $pdf = PDF::loadView('reports.sheets', $data);
+        $pdf = PDF::loadView('pages.reports.sheets', $data);
         $pdf->setPaper('A4', 'landscape');
 
 

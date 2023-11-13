@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Role;
+use App\Models\User;
+use App\Models\Company;
+use App\Models\Employee;
 use Illuminate\Support\Facades\Auth;
 
 class DashController extends Controller
@@ -15,9 +18,17 @@ class DashController extends Controller
      */
     public function index(Request $request)
     {
+        $usersCount = User::count();
+        $companiesCount = Company::count();
+        $employeesCount = Employee::count();
+        $rolesCount = Role::count();
         return view('pages.dashboard.index', [
             'title' => 'Dashboard',
-            'modules' => $request->modules
+            'modules' => $request->modules,
+            'users' => $usersCount,
+            'companies' => $companiesCount,
+            'employees' => $employeesCount,
+            'roles' => $rolesCount
         ]);
     }
 

@@ -41,8 +41,9 @@ class ModuleSeeder extends Seeder
             [
                 'name' => 'Reportes',
                 'level' => 0,
+                'path' => '/reports',
                 'icon' => 'fas fa-user-tie',
-                'children' => true
+                'children' => false
             ],
             [
                 'name' => 'Usuarios y Roles',
