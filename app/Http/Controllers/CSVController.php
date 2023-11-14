@@ -59,8 +59,13 @@ class CSVController extends Controller
                     "salary" => $this->strToDouble($emp["HBE"]),
                     "company_id" => $request->company_id
                 ];
-
-                $employee = Employee::create($e);
+                $employeeFound = Employee::where('document',$emp["ci"])->first();
+                if($employeeFound){
+                    $employee = $employeeFound;
+                }else{
+                    $employee = Employee::create($e);    
+                }
+                
                 foreach ($bonuses as $key => $bonus) {
                     $bonusParams = Bonus::find($bonus->id)->parameters()->get();
                     if($key == 2){//Haber Basico Empleado
