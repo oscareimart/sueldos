@@ -143,7 +143,7 @@ class CSVController extends Controller
             return redirect()->back()->with('success', 'Archivo CSV importado correctamente');
         } catch (\Throwable $th) {
             DB::rollBack();
-            // dd($th->getMessage());
+            dd($th->getMessage());
             return redirect()->back()->with('error', 'Error al importar el archivo CSV: ' . $th->getMessage());
         }
 
