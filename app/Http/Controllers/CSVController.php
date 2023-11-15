@@ -63,11 +63,12 @@ class CSVController extends Controller
                 if($employeeFound){
                     $employee = $employeeFound;
                 }else{
-                    $employee = Employee::create($e);    
+                    $employee = Employee::create($e);
                 }
-                
+                // dd($bonuses);
                 foreach ($bonuses as $key => $bonus) {
                     $bonusParams = Bonus::find($bonus->id)->parameters()->get();
+                    // dd($bonusParams);
                     if($key == 2){//Haber Basico Empleado
                         $employee->parameters()->attach(2,
                             [
@@ -81,7 +82,8 @@ class CSVController extends Controller
                         $paramVariable = Parameter::where('code',$bp->code)->get();
                         $p = DB::table('detailsheets')->
                             where('employee_id',$employee->id)->
-                            where('parameter_id',$paramVariable[0]->id);
+                            where('parameter_id',$paramVariable[0]->id)->
+                            where('document_id',$doc->id);
 
                         if(is_null($paramVariable[0]->value) && $p->count() == 0){
                             switch ($paramVariable[0]->code) {

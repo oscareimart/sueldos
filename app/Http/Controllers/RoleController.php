@@ -73,15 +73,23 @@ class RoleController extends Controller
     }
 
     public function setParent(Array $modules){
+        // dd($modules);
         $modulesParents = [];
         foreach ($modules as $key => $value) {
             $module = Module::find(substr($key,9));
-            if($module->level > 0){
-                $modulesParents += ['checkbox-'.$module->module_id => 'on'];
+            // dd($module);
+            if(!is_null($module)){
+                if($module->level > 0){
+                    $modulesParents += ['checkbox-'.$module->module_id => 'on'];
+                }
+            }else{
+                unset($modules[$key]);
             }
-        }
 
+        }
+        // dd($modulesParents);
         $newModules =  array_merge(array(), $modulesParents);
+        // dd(array_merge($modules,$newModules));
         return array_merge($modules,$newModules);
     }
 

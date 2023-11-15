@@ -66,6 +66,7 @@ class CheckSheetController extends Controller
             ->selectRaw('max(case when `detailsheets`.parameter_id = 13 then `detailsheets`.value end) as PA')
             ->where('documents.year', $documentFound->year)
             ->where('documents.month', $documentFound->month)
+            ->where('documents.id', $request->document_id)
             ->where('employees.company_id', $request->company_id)
             ->groupBy('employees.id',
             'employees.name',
@@ -78,6 +79,7 @@ class CheckSheetController extends Controller
             'employees.position',
             'employees.salary',
             'employees.company_id')
+            // ->toSql();
             ->get();
 
         // dd($allDetail);
@@ -247,6 +249,7 @@ class CheckSheetController extends Controller
     }
 
     public function loadData(Request $request){
+        // dd($request->company_id);
         $allDetail = $this->getData($request);
         // dd($allDetail);
         $allCompanies = Company::all();
