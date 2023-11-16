@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Bonus;
 use App\Models\Company;
 use App\Models\Document;
+use App\Models\Employee;
 use Carbon\Carbon;
 use App\Models\SalaryRange;
 use Illuminate\Support\Facades\DB;
@@ -34,8 +35,9 @@ class CheckSheetController extends Controller
         ]);
     }
 
-    public function getData(Request $request){
+    public function getData(Request $request, $withDate = true){
         // dd($request->all());
+        // dd($withDate);
         $documentFound = Document::find($request->document_id);
         $allCompanies = Company::paginate(10);
         $allDocuments = Document::paginate(10);
@@ -52,7 +54,9 @@ class CheckSheetController extends Controller
             'employees.gender',
             'employees.position',
             'employees.salary',
-            'employees.company_id')
+            'employees.company_id',
+            'documents.month',
+            'documents.year')
             ->selectRaw('max(case when `detailsheets`.parameter_id = 1 then `detailsheets`.value end) as HE')
             ->selectRaw('max(case when `detailsheets`.parameter_id = 2 then `detailsheets`.value end) as HBE')
             ->selectRaw('max(case when `detailsheets`.parameter_id = 3 then `detailsheets`.value end) as DT')
@@ -64,8 +68,17 @@ class CheckSheetController extends Controller
             ->selectRaw('max(case when `detailsheets`.parameter_id = 9 then `detailsheets`.value end) as ANS')
             ->selectRaw('max(case when `detailsheets`.parameter_id = 12 then `detailsheets`.value end) as AT')
             ->selectRaw('max(case when `detailsheets`.parameter_id = 13 then `detailsheets`.value end) as PA')
-            ->where('documents.year', $documentFound->year)
-            ->where('documents.month', $documentFound->month)
+            ->when($withDate, function ($query) use ($documentFound, $request) {
+                // dd($withDate);
+                return $query->where('documents.year', $documentFound->year)
+                    ->where('documents.month', $documentFound->month);
+                    // ->where('documents.id', $request->document_id)
+                    // ->where('employees.company_id', $request->company_id);
+            })
+            // ->where('documents.id', $request->document_id)
+            // ->where('employees.company_id', $request->company_id)
+            // ->where('documents.year', $documentFound->year)
+            // ->where('documents.month', $documentFound->month)
             ->where('documents.id', $request->document_id)
             ->where('employees.company_id', $request->company_id)
             ->groupBy('employees.id',
@@ -78,7 +91,9 @@ class CheckSheetController extends Controller
             'employees.gender',
             'employees.position',
             'employees.salary',
-            'employees.company_id')
+            'employees.company_id',
+            'documents.month',
+            'documents.year')
             // ->toSql();
             ->get();
 
@@ -245,6 +260,39 @@ class CheckSheetController extends Controller
             $d->LP = round($d->TG-$td,2);
         }
         // dd($allDetail);
+        $arr =[
+            ["id"=>16,"cod"=>"BHE"],
+            ["id"=>17,"cod"=>"BRN"],
+            ["id"=>18,"cod"=>"BDT"],
+            ["id"=>19,"cod"=>"BA"],
+            ["id"=>20,"cod"=>"DAFP"],
+            ["id"=>21,"cod"=>"DANS"],
+            ["id"=>22,"cod"=>"DJ"],
+            // ["id"=>23,"cod"=>"LP"],
+        ];
+            // "HBE","BRN","BDT","BA","DAFP","DANS","DJ","LP"]
+        foreach ($allDetail as $key => $d) {
+            $e = Employee::find($d->id);
+            // dd($d->BHE);
+            foreach ($arr as $key => $v) {
+                // dd($v["cod"]);
+                $p = DB::table('detailsheets')->
+                        where('employee_id',$e->id)->
+                        where('parameter_id',$v["id"])->
+                        where('document_id',$request->document_id);
+                if(!is_null($d->{$v["cod"]}) && $p->count() == 0){
+                    $e->parameters()->attach($v["id"],
+                    [
+                        'value' => $d->{$v["cod"]},
+                        'document_id' => $request->document_id,
+                    ]);
+                }
+            }
+
+
+
+        }
+
         return $allDetail;
     }
 

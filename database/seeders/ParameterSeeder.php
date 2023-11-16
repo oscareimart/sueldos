@@ -106,6 +106,48 @@ class ParameterSeeder extends Seeder
                 'category' => 'Variable'
             ],
             [
+                'code' => 'BHE',
+                'name' => 'Bono Horas Extras',
+                'description' => 'Creado por Sistema',
+                'category' => 'Variable'
+            ],
+            [
+                'code' => 'BRN',
+                'name' => 'Bono Recargo Nocturno',
+                'description' => 'Creado por Sistema',
+                'category' => 'Variable'
+            ],
+            [
+                'code' => 'BDT',
+                'name' => 'Bono Domingos Trabajados',
+                'description' => 'Creado por Sistema',
+                'category' => 'Variable'
+            ],
+            [
+                'code' => 'BA',
+                'name' => 'Bono Antiguedad',
+                'description' => 'Creado por Sistema',
+                'category' => 'Variable'
+            ],
+            [
+                'code' => 'DAFP',
+                'name' => 'Descuento AFP',
+                'description' => 'Creado por Sistema',
+                'category' => 'Variable'
+            ],
+            [
+                'code' => 'DANS',
+                'name' => 'Descuento ANS',
+                'description' => 'Creado por Sistema',
+                'category' => 'Variable'
+            ],
+            [
+                'code' => 'DJ',
+                'name' => 'Descuento Jubilado',
+                'description' => 'Creado por Sistema',
+                'category' => 'Variable'
+            ],
+            [
                 'code' => 'CH',
                 'name' => 'Cambio Horas',
                 'description' => 'Creado por Sistema',

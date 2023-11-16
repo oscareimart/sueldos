@@ -48,9 +48,10 @@
 
                                                 <div class="form-group">
                                                     <label>Seleccione Reporte</label>
-                                                    <select name="company_id" id="company_id" class="form-control"
+                                                    <select name="report_id" id="company_id" class="form-control"
                                                         style="width: 100%;">
                                                         <option value="1">Reporte Bono Antiguedad</option>
+                                                        <option value="2">Reporte Historico</option>
 
                                                     </select>
                                                 </div>

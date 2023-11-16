@@ -29,27 +29,53 @@ class ReportController extends Controller
     }
 
     public function genReport(Request $request){
+        // dd($request->report_id);
         $checkSheetController = new CheckSheetController();
-        $dataSheet = $checkSheetController->getData($request);
-        $document = Document::find($request->document_id);
-        // dd($dataSheet,json_decode($document->json));
         $companyFound = Company::find($request->company_id);
-        $dataJson = json_decode($document->json);
-        foreach ($dataSheet as $key => $ds) {
-            if ($dataJson[$key]) {
-                $ds->BAE = floatval($dataJson[$key]->BA);
-            }
+        switch ($request->report_id) {
+            case '1':
+                # code...
+                break;
+
+                $dataSheet = $checkSheetController->getData($request);
+                $document = Document::find($request->document_id);
+                // dd($dataSheet,json_decode($document->json));
+
+                $dataJson = json_decode($document->json);
+                foreach ($dataSheet as $key => $ds) {
+                    if ($dataJson[$key]) {
+                        $ds->BAE = floatval($dataJson[$key]->BA);
+                    }
+                }
+                // dd($dataSheet);
+                $data = [
+                    'title'=>'Reporte Bono Antiguedad',
+                    'subtitle'=>$companyFound->business_name,
+                    'date'=>date('m/d/Y'),
+                    'data'=>$dataSheet->toArray(),
+                    //'errors'=>$errorsSheet
+                ];
+                // dd($data);
+                $pdf = PDF::loadView('pages.reports.bantiguedad', $data)->setPaper('landscape');;
+
+            case '2':
+                $dataSheet = $checkSheetController->getData($request,false);
+                // dd($dataSheet);
+                $data = [
+                    'title'=>'Reporte Historico',
+                    'subtitle'=>$companyFound->business_name,
+                    'date'=>date('m/d/Y'),
+                    'data'=>$dataSheet->toArray(),
+                    //'errors'=>$errorsSheet
+                ];
+                // dd($data);
+                $pdf = PDF::loadView('pages.reports.historico', $data)->setPaper('A4','landscape');;
+                break;
+
+            default:
+                # code...
+                break;
         }
-        // dd($dataSheet);
-        $data = [
-            'title'=>'Reporte Bono Antiguedad',
-            'subtitle'=>$companyFound->business_name,
-            'date'=>date('m/d/Y'),
-            'data'=>$dataSheet->toArray(),
-            //'errors'=>$errorsSheet
-        ];
-        // dd($data);
-        $pdf = PDF::loadView('pages.reports.bantiguedad', $data)->setPaper('landscape');;
         // $pdf->setPaper('A4', 'landscape');
 
 
