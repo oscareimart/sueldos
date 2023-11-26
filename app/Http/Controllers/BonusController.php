@@ -104,6 +104,15 @@ class BonusController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // dd($id);
+        try {
+            $bonusFound = Bonus::find($id);
+            // if($bonusFound->is_system)
+            //     abort(403, 'No tienes permiso para eliminar un usuario del sistema.');
+            $bonusFound->delete();
+            return redirect()->route('bonus.index')->with('success', 'Registro eliminado correctamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('bonus.index')->with('error', 'Error al eliminar el registro: '.$e->getMessage());
+        }
     }
 }

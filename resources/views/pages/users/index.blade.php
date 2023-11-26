@@ -57,6 +57,19 @@
                                                 {{ session('success') }}
                                             </div>
                                         @endif
+                                        @if (session('error'))
+                                            <div class="alert alert-danger alert-dismissible">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-hidden="true">&times;</button>
+                                                <h5><i class="icon fas fa-check"></i>Error al Registrar</h5>
+                                                <ul>
+
+                                                    <li>{{ session('error') }}</li>
+
+                                                </ul>
+                                            </div>
+                                        @endif
+
                                         @if ($errors->any())
                                             <div class="alert alert-danger alert-dismissible">
                                                 <button type="button" class="close" data-dismiss="alert"
@@ -78,15 +91,22 @@
                                                     <td>{{ $user->email }}</td>
                                                     <td>{{ App\Models\Role::find($user->role_id)->name }}</td>
                                                     <td>
-                                                        <button type="button" class="btn btn-warning">
+                                                        <button type="button" class="btn btn-warning" data-toggle="modal"
+                                                            data-target="#editModal{{ $user->id }}">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
-                                                        <button type="button" class="btn btn-danger">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </button>
+                                                        <form action="{{ route('users.destroy', $user->id) }}"
+                                                            method="post" style="display: inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger"
+                                                                onclick="return confirm('Esta Seguro de ELiminar al usuario?')">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </button>
+                                                        </form>
                                                     </td>
-                                                    {{-- <td>{{ $emp->update_all }}</td> --}}
                                                 </tr>
+                                                @include('pages.users.modal_update')
                                             @endforeach
                                         @else
                                             no data

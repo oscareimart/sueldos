@@ -35,6 +35,7 @@
     {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
 
     <link rel='stylesheet' href='css/jquery.simple-tree-picker.css'>
+    <link rel='stylesheet' href='css/data_sheets.css'>
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Inter:400,700' type='text/css'>
     <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
     {{-- <style type="text/css">

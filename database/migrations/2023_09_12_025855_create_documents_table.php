@@ -22,7 +22,7 @@ class CreateDocumentsTable extends Migration
             $table->boolean('status')->default(true);
             $table->json('json');
             $table->unsignedBigInteger('company_id')->nullable();
-            $table->foreign('company_id')->references('id')->on('companies');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('restrict');
             $table->timestamps();
         });
     }

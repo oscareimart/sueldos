@@ -47,7 +47,7 @@
                                             <th>FORMULA</th>
                                             <th>DESCRIPCION</th>
                                             <th>FECHA CREACION</th>
-                                            {{-- <th>Acciones</th> --}}
+                                            <th>OPCIONES</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -57,6 +57,18 @@
                                                     aria-hidden="true">&times;</button>
                                                 <h5><i class="icon fas fa-check"></i>Creacion Correcta!</h5>
                                                 {{ session('success') }}
+                                            </div>
+                                        @endif
+                                        @if (session('error'))
+                                            <div class="alert alert-danger alert-dismissible">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-hidden="true">&times;</button>
+                                                <h5><i class="icon fas fa-check"></i>Error al Registrar</h5>
+                                                <ul>
+
+                                                    <li>{{ session('error') }}</li>
+
+                                                </ul>
                                             </div>
                                         @endif
                                         @if ($errors->any())
@@ -82,12 +94,20 @@
                                                     <td>{{ $bonus->description }}</td>
                                                     <td>{{ $bonus->created_at }}</td>
                                                     <td>
-                                                        <button type="button" class="btn btn-warning">
+                                                        <button type="button" class="btn btn-warning" data-toggle="modal"
+                                                            data-target="#editModal{{ $bonus->id }}">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
-                                                        <button type="button" class="btn btn-danger">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </button>
+                                                        <form action="{{ route('bonus.destroy', $bonus->id) }}"
+                                                            method="post" style="display: inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger"
+                                                                onclick="return confirm('Esta Seguro de ELiminar El Registro?')">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </button>
+                                                        </form>
+                                                        @include('pages.bonus.modal_update')
                                                     </td>
                                                     {{-- <td>{{ $emp->update_all }}</td> --}}
                                                 </tr>

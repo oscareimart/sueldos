@@ -22,7 +22,7 @@ class CreateModulesTable extends Migration
             $table->boolean('status')->default(true);
             $table->boolean('children')->default(false);
             $table->unsignedBigInteger('module_id')->nullable();
-            $table->foreign('module_id')->references('id')->on('modules');
+            $table->foreign('module_id')->references('id')->on('modules')->onDelete('restrict');
             $table->timestamps();
         });
     }

@@ -21,8 +21,10 @@ class CheckRole
     {
         $user = Auth::user();
         $allModules = Module::all('id');
-        // dd($request->path());
-        $acc = Module::where('path','/'.$request->path())->get();
+        // dd($request);
+        $path = explode('/', $request->path());
+        // dd($path[0]);
+        $acc = Module::where('path','/'.$path[0])->get();
         // dd($acc[0]->id);
         $role = Role::find($user->role_id);
         $mods = $role->modules()->select('modules.id')->get();
@@ -33,8 +35,8 @@ class CheckRole
         $ids_ = array_map(function ($item) {
             return $item['id'];
         }, $allModules->toArray());
-        // dd($acc[0]->id, $ids);
-        // dd(in_array($acc[0]->id, $ids));
+        // dd($acc, $ids);
+        // dd(in_array($acc, $ids));
         if ($user && in_array($acc[0]->id, $ids)) {
             return $next($request);
         }else{

@@ -17,8 +17,8 @@ class CreateRolesModulesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('module_id')->nullable();
             $table->unsignedBigInteger('role_id')->nullable();
-            $table->foreign('module_id')->references('id')->on('modules');
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('module_id')->references('id')->on('modules')->onDelete('restrict');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('restrict');
             $table->timestamps();
         });
     }

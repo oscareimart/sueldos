@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -119,7 +120,24 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($id);
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role_id' => ['required'],
+        ]);
+        $userFound = User::find($id);
+        if (!$userFound) {
+            return redirect()->route('users.index')->with('error', 'Usuario no encontrado.');
+        }
+        $userFound->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')), // Asegúrate de cifrar la nueva contraseña
+            'role_id' => $request->input('role_id'),
+        ]);
+        return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
     }
 
     /**
@@ -130,6 +148,14 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $userFound = User::find($id);
+            if($userFound->is_system)
+                abort(403, 'No tienes permiso para eliminar un usuario del sistema.');
+            $userFound->delete();
+            return redirect()->route('users.index')->with('success', 'Usuario eliminado correctamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('users.index')->with('error', 'Error al eliminar el usuario: '.$e->getMessage());
+        }
     }
 }

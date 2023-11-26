@@ -1,0 +1,61 @@
+.bg-green-1 {
+    background-color: #90e9c4;
+    color: #000000;
+    /* Verde */
+}
+
+.bg-green-2 {
+    background-color: #00be6f;
+    color: #fff;
+    /* Verde */
+}
+
+.bg-green-3 {
+    background-color: #00663b;
+    color: #fff;
+    /* Verde */
+}
+
+.bg-orange-1 {
+    background-color: #f1ae8d;
+    color: #000000;
+    /* Verde */
+}
+
+.bg-orange-2 {
+    background-color: #b55822;
+    color: #fff;
+    /* Verde */
+}
+
+.bg-totals {
+    background-color: #00663b;
+    color: #fff;
+}
+
+.bg-check {
+    background-color: #e95151;
+    color: #fff;
+    cursor: pointer;
+}
+
+.bg-fields {
+    background-color: #404040;
+    color: #fff;
+    cursor: pointer;
+}
+
+#dataTableSys {
+    font-size: 13px;
+    /* Ajusta el tamaño de la fuente según tus necesidades */
+}
+
+#dataTableScv {
+    font-size: 13px;
+    /* Ajusta el tamaño de la fuente según tus necesidades */
+}
+
+#totalsTable {
+    font-size: 13px;
+    /* Ajusta el tamaño de la fuente según tus necesidades */
+}

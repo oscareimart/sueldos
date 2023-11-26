@@ -29,13 +29,12 @@ class ReportController extends Controller
     }
 
     public function genReport(Request $request){
-        // dd($request->report_id);
+        // dd($request->all());
         $checkSheetController = new CheckSheetController();
         $companyFound = Company::find($request->company_id);
         switch ($request->report_id) {
             case '1':
-                # code...
-                break;
+
 
                 $dataSheet = $checkSheetController->getData($request);
                 $document = Document::find($request->document_id);
@@ -56,7 +55,9 @@ class ReportController extends Controller
                     //'errors'=>$errorsSheet
                 ];
                 // dd($data);
-                $pdf = PDF::loadView('pages.reports.bantiguedad', $data)->setPaper('landscape');;
+                $pdf = PDF::loadView('pages.reports.bantiguedad', $data)->setPaper('landscape');
+                # code...
+                break;
 
             case '2':
                 $dataSheet = $checkSheetController->getData($request,false);

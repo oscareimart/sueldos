@@ -304,22 +304,35 @@
                 "responsive": true,
             });
             $('#dataTableScv').DataTable({
-                "paging": true,
+                "paging": false,
                 "lengthChange": false,
-                "searching": false,
+                "searching": true,
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,
             });
             $('#dataTableSys').DataTable({
-                "paging": true,
+                "paging": false,
                 "lengthChange": false,
-                "searching": false,
+                "searching": true,
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,
+                // "columnDefs": [{
+                //         "width": "100px",
+                //         "targets": 0
+                //     } // Ajusta el ancho según tus necesidades para la columna 0
+                // ],
+                // "paging": false,
+                // "lengthChange": true,
+                // "searching": true,
+                // "ordering": true,
+                // "info": true,
+                // "autoWidth": false,
+                // "responsive": true,
+                // "autoHeight": false
             });
 
             function base64ToArrayBuffer(base64) {
@@ -445,6 +458,71 @@
             // Update view with initial state (onclick isn't called for initial selection)
             $("#selected").html($(".tree").simpleTreePicker("display").toString().replace(/,/g, ', '));
         }
+
+        function formatMyMoney(price) {
+
+            // var currency_symbol = "Bs"
+            // const numericPrice = price
+            const numericPrice = Number(price.replace(',', '.'))
+            // console.log('fomato---------------------', numericPrice);
+            var formattedOutput = new Intl.NumberFormat('es-BO', {
+                style: 'currency',
+                currency: 'BOB',
+                minimumFractionDigits: 2,
+            });
+
+            return formattedOutput.format(numericPrice)
+        }
+        $(document).ready(function() {
+            // Iterar sobre todas las celdas con la clase .f-currency
+            $(".f-currency").each(function() {
+                // Obtener el contenido de la celda
+                let contenido = $(this).text();
+                // console.log(contenido);
+
+                // Aplicar la función formatMyMoney al contenido
+                let nuevoContenido = formatMyMoney(contenido);
+                // if (isNaN(nuevoContenido)) {
+                //     console.log(contenido);
+                //     console.log(nuevoContenido);
+                // }
+                // alert("Valor formateado: " + nuevoContenido);
+
+
+                // Establecer el nuevo contenido en la celda
+                $(this).text(nuevoContenido);
+            });
+        });
+        $(".bg-check").click(function() {
+            alert("esta obs");
+        })
+        // $(document).ready(function() {
+        //     // Asignar el evento mouseenter (apuntar) a las celdas con la clase .f-currency
+        //     $(".f-currency").mouseenter(function() {
+        //         // Obtener el contenido de la celda
+        //         let contenido = $(this).text();
+
+        //         // Aplicar la función formatMyMoney al contenido
+        //         let nuevoContenido = formatMyMoney(contenido);
+
+        //         // Mostrar un mensaje emergente con el contenido formateado
+        //         alert("Valor formateado: " + nuevoContenido);
+        //     });
+        // });
+        // let v = $(".f-currency").text()
+        // console.log(v);
+        // $(".f-currency").html(formatMyMoney($(".f-currency").text()));
+        // let money = document.querySelector("#f-currency").innerHTML.trim();
+        // money = new Intl.NumberFormat("en-US", {
+        //     style: 'currency',
+        //     currency: 'BOB',
+        //     minimumFractionDigits: 2,
+        // }).format(cost);
+        // document.querySelector("#f-currency").innerHTML = money;
+        // let setFormatCurrencyBO = new Intl.NumberFormat('es-BO', {
+        //     style: 'currency',
+        //     currency: 'BOB',
+        // });
         // Create tree object
         // let menu = {
         //     Number: 1,

@@ -333,7 +333,49 @@ class CheckSheetController extends Controller
 
         }
         // dd($errorsSheet);
+        // for ($i = 0; $i < count($this->allDetailJson); $i++) {
+        //     $elementoPrimerArray = $this->allDetailJson[$i];
+        //     $elementoSegundoArray = $allDetail[$i];
+        //     // dd($elementoPrimerArray,$elementoSegundoArray);
+        //     $propiedadesPrimerObjeto = get_object_vars($elementoPrimerArray);
+        //     $propiedadesSegundoObjeto = get_object_vars($elementoSegundoArray);
+        //     // dd($propiedadesPrimerObjeto,$propiedadesSegundoObjeto);
+        //     $sonDistintos = false;
 
+        //     // Itera sobre las propiedades comunes
+        //     foreach ($propiedadesPrimerObjeto as $nombreCampo => $valorPrimerObjeto) {
+
+        //         // Compara el valor con el segundo objeto
+        //         $valorSegundoObjeto = $propiedadesSegundoObjeto[$nombreCampo] ?? null;
+
+        //         if ($valorPrimerObjeto != $valorSegundoObjeto) {
+        //             // dd($valorPrimerObjeto, $valorSegundoObjeto);
+        //             // echo "Diferencia en el campo $nombreCampo:\n";
+        //             // echo "Primer Objeto: $valorPrimerObjeto\n";
+        //             // echo "Segundo Objeto: $valorSegundoObjeto\n";
+        //             $sonDistintos = true;
+        //         }
+        //         $elementoPrimerArray->DIF = $sonDistintos;
+        //         $elementoSegundoArray->DIF = $sonDistintos;
+        //         dd($elementoPrimerArray,$elementoSegundoArray);
+        //     }
+
+        //     // Compara los valores de los elementos
+        //     // if ($elementoPrimerArray != $elementoSegundoArray) {
+        //     //     echo "Diferencias en el índice $i:\n";
+        //     //     echo "Primer Array: " . print_r($elementoPrimerArray, true) . "\n";
+        //     //     echo "Segundo Array: " . print_r($elementoSegundoArray, true) . "\n";
+        //     // }
+        // }
+        // dd([
+        //     'title' => 'Empresas',
+        //     'modules' => $request->modules,
+        //     'data' => $allDetail,
+        //     'companies' => $allCompanies,
+        //     'documents' => $allDocuments,
+        //     'documentCsv' => $this->allDetailJson,
+        //     'errorsSheet' => $errorsSheet
+        // ]);
         return view('pages.checksheets.index', [
             'title' => 'Empresas',
             'modules' => $request->modules,

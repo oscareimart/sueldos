@@ -16,9 +16,9 @@ class CreateDetailbonusTable extends Migration
         Schema::create('detailbonus', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('parameter_id')->nullable();
-            $table->foreign('parameter_id')->references('id')->on('parameters');
+            $table->foreign('parameter_id')->references('id')->on('parameters')->onDelete('restrict');
             $table->unsignedBigInteger('bonus_id')->nullable();
-            $table->foreign('bonus_id')->references('id')->on('bonuses');
+            $table->foreign('bonus_id')->references('id')->on('bonuses')->onDelete('cascade');
             $table->timestamps();
         });
     }

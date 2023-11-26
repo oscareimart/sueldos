@@ -18,6 +18,7 @@ class ModuleSeeder extends Seeder
             [
                 'name' => 'Dashboard',
                 'level' => 0,
+                'path' => '/dashboard',
                 'icon' => 'nav-icon fas fa-tachometer-alt'
             ],
             [

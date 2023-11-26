@@ -16,9 +16,9 @@ class CreateCompanybonusesTable extends Migration
         Schema::create('companybonuses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('company_id')->nullable();
-            $table->foreign('company_id')->references('id')->on('companies');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('restrict');
             $table->unsignedBigInteger('bonus_id')->nullable();
-            $table->foreign('bonus_id')->references('id')->on('bonuses');
+            $table->foreign('bonus_id')->references('id')->on('bonuses')->onDelete('restrict');
             $table->timestamps();
         });
     }

@@ -19,11 +19,11 @@ class CreateDetailsheetsTable extends Migration
             // $table->string('year');
             // $table->string('month');
             $table->unsignedBigInteger('employee_id')->nullable();
-            $table->foreign('employee_id')->references('id')->on('employees');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('restrict');
             $table->unsignedBigInteger('parameter_id')->nullable();
-            $table->foreign('parameter_id')->references('id')->on('parameters');
+            $table->foreign('parameter_id')->references('id')->on('parameters')->onDelete('restrict');
             $table->unsignedBigInteger('document_id')->nullable();
-            $table->foreign('document_id')->references('id')->on('documents');
+            $table->foreign('document_id')->references('id')->on('documents')->onDelete('restrict');
             $table->timestamps();
         });
     }
