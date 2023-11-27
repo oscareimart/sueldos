@@ -12,19 +12,6 @@
             font-size: 0.5em;
         }
 
-        .pintaAmarillo {
-            background-color: yellow;
-        }
-
-        .pintaVerde {
-            background-color: #00ff5e
-        }
-
-        .pintaRojo {
-            background-color: #ff0000;
-            color: #ffffff;
-        }
-
         .container {
             max-width: 950px;
             margin: 0 auto;
@@ -88,10 +75,25 @@
                     <tr>
                         <th>Nro</th>
                         <th>Nombre</th>
-                        <th>Año</th>
-                        <th>Mes</th>
-                        <th>Estado</th>
-                        <th>Fecha Creacion</th>
+                        <th>Carnet</th>
+                        <th>HBE</th>
+                        <th>HE</th>
+                        <th>DT</th>
+                        <th>HRN</th>
+                        <th>PA</th>
+                        <th>BHE</th>
+                        <th>BRN</th>
+                        <th>BDT</th>
+                        <th>BA</th>
+                        <th>TG</th>
+                        <th>DAFP</th>
+                        <th>DANS</th>
+                        <th>DJ</th>
+                        <th>TD</th>
+                        <th>LP</th>
+                        <th>year</th>
+                        <th>month</th>
+
 
                     </tr>
                 </thead>
@@ -100,20 +102,31 @@
 
                     @foreach ($data as $key => $d)
                         <tr>
-                            {{-- @dump($d) --}}
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $d['name'] }}</td>
-                            <td>{{ $d['year'] }}</td>
-                            <td>{{ $d['month'] }}</td>
-                            @if ($d['status'] == 1)
-                                <td><span class="pintaAmarillo">Pendiente</span></td>
-                            @elseif ($d['status'] == 2)
-                                <td><span class="pintaRojo">Observado</span></td>
-                            @elseif ($d['status'] == 3)
-                                <td><span class="pintaVerde">No Observado</span></td>
-                            @endif
-                            {{-- <td>{{ $d['status'] }}</td> --}}
-                            <td>{{ $d['created_at'] }}</td>
+                            <td>{{ $d->name }}</td>
+                            <td>{{ $d->document . $d->extension }}</td>
+                            {{-- <td>{{ $d->salary }}</td> --}}
+                            <td>{{ $d->HE }}</td>
+                            <td>{{ $d->HBE }}</td>
+                            <td>{{ $d->DT }}</td>
+                            <td>{{ $d->HRN }}</td>
+                            <td>{{ $d->PA }}</td>
+                            <td>{{ $d->BHE }}</td>
+                            <td>{{ $d->BRN }}</td>
+                            <td>{{ $d->BDT }}</td>
+                            <td>{{ $d->BA }}</td>
+                            <td>{{ $d->TG }}</td>
+                            <td>{{ $d->DAFP }}</td>
+                            <td>{{ $d->DANS }}</td>
+                            <td>{{ $d->DJ }}</td>
+                            <td>{{ $d->TD }}</td>
+                            <td>{{ $d->LP }}</td>
+                            <td>{{ $d->year }}</td>
+                            <td>{{ $d->month }}</td>
+
+
+
+                            </td>
                         </tr>
                     @endforeach
 

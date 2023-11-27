@@ -19,7 +19,7 @@ class CreateDocumentsTable extends Migration
             $table->string('path')->nullable();
             $table->string('year');
             $table->string('month');
-            $table->boolean('status')->default(true);
+            $table->integer('status')->default(1);//1=pendiente,2=observador,3=no observado
             $table->json('json');
             $table->unsignedBigInteger('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('restrict');

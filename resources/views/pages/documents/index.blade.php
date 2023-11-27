@@ -43,10 +43,12 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>NOMBRE</th>
-                                            <th>PATH</th>
+                                            {{-- <th>PATH</th> --}}
                                             <th>YEAR</th>
                                             <th>MONTH</th>
                                             <th>EMPRESA</th>
+                                            <th>ESTADO</th>
+                                            <th>OPCIONES</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -76,10 +78,20 @@
                                                 <tr>
                                                     <td>{{ $module->id }}</td>
                                                     <td>{{ $module->name }}</td>
-                                                    <td>{{ $module->path }}</td>
+                                                    {{-- <td>{{ $module->path }}</td> --}}
                                                     <td>{{ $module->year }}</td>
                                                     <td>{{ $module->month }}</td>
-                                                    <td>{{ $module->company_id }}</td>
+                                                    <td>{{ App\Models\Company::find($module->company_id)->business_name }}
+                                                    </td>
+                                                    @if ($module->status == 1)
+                                                        <td><span class="badge bg-warning">Pendiente</span></td>
+                                                    @elseif ($module->status == 2)
+                                                        <td><span class="badge bg-danger">Observado</span></td>
+                                                    @elseif ($module->status == 3)
+                                                        <td><span class="badge bg-success">No Observado</span></td>
+                                                    @endif
+                                                    {{-- <td><span class="badge bg-danger">{{ $module->status }}</span></td> --}}
+                                                    {{-- <td>{{ $module->status == 1 ? 'Pendiente' : 'Observado' }}</td> --}}
                                                     <td>
                                                         <button type="button" class="btn btn-warning">
                                                             <i class="fas fa-edit"></i>

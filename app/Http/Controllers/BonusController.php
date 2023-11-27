@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Bonus;
 use App\Models\Parameter;
+use Illuminate\Validation\Rule;
 
 class BonusController extends Controller
 {
@@ -93,7 +94,47 @@ class BonusController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request->all());
+        $request->validate([
+            'code' => ['required', 'string', 'max:255', Rule::unique('bonuses')->ignore($id)],
+            'name' => ['required', 'string', 'max:255'],
+            'recipe' => ['required', 'string', 'max:255'],
+            'variables' => 'required',
+            // 'name' => ['string', 'max:255'],
+            // 'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)],
+            // 'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // 'role_id' => ['required'],
+        ]);
+        $bonus = Bonus::findOrFail($id);
+        $bonus->update($request->all());
+        // $bonus->update([
+        //     'code' => $request->code,
+        //     'name' => $request->name,
+        //     'recipe' => $request->recipe,
+        //     'description' => $request->name,
+        //     // Otros campos que necesitas actualizar
+        // ]);
+
+        // Actualiza la relación muchos a muchos con los nuevos valores
+        $bonus->parameters()->sync([]);
+
+        foreach ($request->variables as $key => $v) {
+            $paramVariable = Parameter::where('code', $v)->first();
+            if ($paramVariable) {
+                $bonus->parameters()->attach($paramVariable->id);
+            }
+        }
+        // $bonusFound = Bonus::find($id);
+        // if (!$bonusFound) {
+        //     return redirect()->route('users.index')->with('error', 'Usuario no encontrado.');
+        // }
+        // $bonusFound->update([
+        //     'name' => $request->input('name'),
+        //     'email' => $request->input('email'),
+        //     'password' => bcrypt($request->input('password')), // Asegúrate de cifrar la nueva contraseña
+        //     'role_id' => $request->input('role_id'),
+        // ]);
+        return redirect()->route('bonus.index')->with('success', 'Bono actualizado correctamente.');
     }
 
     /**

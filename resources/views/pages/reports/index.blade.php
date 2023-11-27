@@ -48,19 +48,21 @@
 
                                                 <div class="form-group">
                                                     <label>Seleccione Reporte</label>
-                                                    <select name="report_id" id="company_id" class="form-control"
+                                                    <select name="report_id" id="report" class="form-control"
                                                         style="width: 100%;">
+                                                        <option selected disabled>Seleccione...</option>
                                                         <option value="1">Reporte Bono Antiguedad</option>
                                                         <option value="2">Reporte Historico</option>
 
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2" id="col-company-r" style="display: none;">
                                                 <div class="form-group">
                                                     <label>Seleccione Empresa</label>
-                                                    <select name="company_id" id="company_id" class="form-control"
+                                                    <select name="company_id" id="companies-r" class="form-control"
                                                         style="width: 100%;">
+                                                        <option selected disabled>Seleccione...</option>
                                                         @foreach ($companies as $com)
                                                             <option value="{{ $com->id }}">
                                                                 {{ $com->business_name }}
@@ -72,17 +74,46 @@
                                                 </div>
 
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2" id="col-document-r" style="display: none;">
                                                 <div class="form-group">
                                                     <label>Seleccione Planilla</label>
-                                                    <select name="document_id" id="document_id" class="form-control"
+                                                    <select name="document_id" id="documents-r" class="form-control"
                                                         style="width: 100%;">
-                                                        @foreach ($documents as $doc)
+                                                        {{-- @foreach ($documents as $doc)
                                                             <option value="{{ $doc->id }}">
                                                                 {{ $doc->name }}
 
                                                             </option>
-                                                        @endforeach
+                                                        @endforeach --}}
+
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-2" id="col-opcion-r" style="display: none;">
+                                                <div class="form-group">
+                                                    <label>Opciones</label>
+                                                    <select name="option_id" id="documents-r" class="form-control"
+                                                        style="width: 100%;">
+                                                        <option selected disabled>Seleccione...</option>
+                                                        <option value="1">
+                                                            Planillas Observadas
+                                                        </option>
+                                                        <option value="2">
+                                                            Planillas No Observadas
+                                                        </option>
+                                                        <option value="3">
+                                                            Planillas Pendientes
+                                                        </option>
+                                                        <option value="4">
+                                                            Todas
+                                                        </option>
+                                                        {{-- @foreach ($documents as $doc)
+                                                            <option value="{{ $doc->id }}">
+                                                                {{ $doc->name }}
+
+                                                            </option>
+                                                        @endforeach --}}
 
                                                     </select>
                                                 </div>

@@ -297,14 +297,15 @@ class CheckSheetController extends Controller
     }
 
     public function loadData(Request $request){
-        // dd($request->company_id);
+        // dd($request->all());
         $allDetail = $this->getData($request);
         // dd($allDetail);
+        $document = Document::find($request->document_id);
         $allCompanies = Company::all();
         $allDocuments = Document::all();
         $errorsSheet = [];
         // dd($allDetail,$this->allDetailJson);
-
+        $isObserved = 1;
         foreach ($allDetail as $key => $ds) {
             foreach ($this->allDetailJson as $key => $bonus) {
                 $keys = array_keys(get_object_vars($bonus));
@@ -316,7 +317,6 @@ class CheckSheetController extends Controller
                             if(is_numeric($ds->{$value})){
                                 $dif = round($ds->{$value} - $this->strToDouble($this->allDetailJson[$key]->{$value}),2);
                                 if($bonus->{$value} <> $this->strToDouble($this->allDetailJson[$key]->{$value}) && $dif <> 0){
-
                                     array_push($errorsSheet,[
                                         "employee_id"=>$ds->id,
                                         "obs"=> "Error en ". $value .", empleado: ".$ds->name.", diferencia: ".$dif
@@ -332,6 +332,12 @@ class CheckSheetController extends Controller
             }
 
         }
+        if(count($errorsSheet)>0){
+            $document->status = 2;
+        }else{
+            $document->status = 3;
+        }
+        $document->save();
         // dd($errorsSheet);
         // for ($i = 0; $i < count($this->allDetailJson); $i++) {
         //     $elementoPrimerArray = $this->allDetailJson[$i];

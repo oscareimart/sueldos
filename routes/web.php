@@ -70,3 +70,5 @@ Route::post('/importar-csv', [App\Http\Controllers\CSVController::class, 'import
 Route::post('/generatePdf', [App\Http\Controllers\DomPdfController::class, 'generatePDF'])->name('generatePDF');
 
 Route::post('/get-menu', [App\Http\Controllers\RoleController::class, 'getMenu'])->name('get-menu')->middleware(['auth','init.config']);
+
+Route::get('/get-docs-by-company/{company_id}', [App\Http\Controllers\DocumentsController::class, 'getDocumentsByCompany'])->name('getDocsByCompany')->middleware(['auth']);

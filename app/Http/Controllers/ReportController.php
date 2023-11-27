@@ -33,7 +33,7 @@ class ReportController extends Controller
         $checkSheetController = new CheckSheetController();
         $companyFound = Company::find($request->company_id);
         switch ($request->report_id) {
-            case '1':
+            case '1'://BA
 
 
                 $dataSheet = $checkSheetController->getData($request);
@@ -59,14 +59,37 @@ class ReportController extends Controller
                 # code...
                 break;
 
-            case '2':
-                $dataSheet = $checkSheetController->getData($request,false);
+            case '2'://HIS
+                $opt = 1;
+                switch ($request->option_id) {
+                    case '1':
+                        $opt = 2;
+                        $data_ = Document::where('status',2)->where('company_id',$request->company_id)->get();
+                        break;
+
+                    case '2':
+                        $opt = 3;
+                        $data_ = Document::where('status',3)->where('company_id',$request->company_id)->get();
+                        break;
+
+                    case '3':
+                        $opt = 1;
+                        $data_ = Document::where('status',1)->where('company_id',$request->company_id)->get();
+                        break;
+
+                    default:
+                        $data_ = Document::where('company_id',$request->company_id)->get();
+                        break;
+                }
+                // $data = Document::where('status',$request->option_id);
+                // dd($data);
+                // $dataSheet = $checkSheetController->getData($request,false);
                 // dd($dataSheet);
                 $data = [
                     'title'=>'Reporte Historico',
                     'subtitle'=>$companyFound->business_name,
                     'date'=>date('m/d/Y'),
-                    'data'=>$dataSheet->toArray(),
+                    'data'=>$data_->toArray(),
                     //'errors'=>$errorsSheet
                 ];
                 // dd($data);

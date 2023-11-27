@@ -390,6 +390,31 @@
     <script src="js/jquery.simple-tree-picker.js"></script>
     <script>
         // $(function() {
+        // $('#companies').change(() => {
+        //     console.log('ok');
+        //     // $.ajax({
+        //     //     headers: {
+        //     //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //     //     },
+        //     //     url: 'get-menu',
+        //     //     type: 'POST',
+        //     //     dataType: 'json',
+        //     //     success: function(response) {
+        //     //         // Handle the response from the controller method
+        //     //         // menu = response.modules
+        //     //         // return response
+        //     //         setMenu(response)
+        //     //         // console.log(menu);
+        //     //     },
+        //     //     error: function(error) {
+        //     //         console.error('Error:', error);
+        //     //     }
+
+        //     // });
+        //     // return menu
+        //     // console.log(menu.modules);
+        //     // console.log(menu.responseJSON);
+        // })
         $('#btnAddRole').click(() => {
             console.log('ok');
             $.ajax({
@@ -460,11 +485,7 @@
         }
 
         function formatMyMoney(price) {
-
-            // var currency_symbol = "Bs"
-            // const numericPrice = price
             const numericPrice = Number(price.replace(',', '.'))
-            // console.log('fomato---------------------', numericPrice);
             var formattedOutput = new Intl.NumberFormat('es-BO', {
                 style: 'currency',
                 currency: 'BOB',
@@ -474,66 +495,121 @@
             return formattedOutput.format(numericPrice)
         }
         $(document).ready(function() {
-            // Iterar sobre todas las celdas con la clase .f-currency
             $(".f-currency").each(function() {
-                // Obtener el contenido de la celda
                 let contenido = $(this).text();
-                // console.log(contenido);
-
-                // Aplicar la función formatMyMoney al contenido
                 let nuevoContenido = formatMyMoney(contenido);
-                // if (isNaN(nuevoContenido)) {
-                //     console.log(contenido);
-                //     console.log(nuevoContenido);
-                // }
-                // alert("Valor formateado: " + nuevoContenido);
-
-
-                // Establecer el nuevo contenido en la celda
                 $(this).text(nuevoContenido);
             });
         });
         $(".bg-check").click(function() {
             alert("esta obs");
         })
-        // $(document).ready(function() {
-        //     // Asignar el evento mouseenter (apuntar) a las celdas con la clase .f-currency
-        //     $(".f-currency").mouseenter(function() {
-        //         // Obtener el contenido de la celda
-        //         let contenido = $(this).text();
+        $("#companies").on("change", function() {
+            const value = $(this).val();
+            // console.log(value);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '/get-docs-by-company/' + value,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Handle the response from the controller method
+                    // menu = response.modules
+                    // return response
+                    console.log(response);
+                    $("#documents").empty();
+                    $.each(response.documents, function(index, doc) {
+                        console.log(doc);
+                        var option = $("<option>").text(doc.name).attr('value', doc
+                            .id); //.attr('id', 'document_' + value.id);
+                        $("#documents").append(option);
+                    });
+                    // setMenu(response)
+                    // console.log(menu);
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
 
-        //         // Aplicar la función formatMyMoney al contenido
-        //         let nuevoContenido = formatMyMoney(contenido);
+            });
+            // setPlanillas(value);
+        })
+        $("#report").on("change", function() {
+            const value = $(this).val();
+            console.log(value);
+            if (value === "1") {
+                $("#col-company-r").show();
+                $("#col-document-r").show();
+                $("#col-opcion-r").hide();
+            }
+            if (value === "2") {
+                $("#col-company-r").show();
+                $("#col-document-r").hide();
+                $("#col-opcion-r").show();
+            }
 
-        //         // Mostrar un mensaje emergente con el contenido formateado
-        //         alert("Valor formateado: " + nuevoContenido);
+        })
+        $("#companies-r").on("change", function() {
+            const value = $(this).val();
+            // console.log(value);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '/get-docs-by-company/' + value,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Handle the response from the controller method
+                    // menu = response.modules
+                    // return response
+                    console.log(response);
+                    $("#documents-r").empty();
+                    $.each(response.documents, function(index, doc) {
+                        console.log(doc);
+                        var option = $("<option>").text(doc.name).attr('value', doc
+                            .id); //.attr('id', 'document_' + value.id);
+                        $("#documents-r").append(option);
+                    });
+                    // setMenu(response)
+                    // console.log(menu);
+                },
+                error: function(error) {
+                    console.error('Error:', error);
+                }
+
+            });
+            // setPlanillas(value);
+        })
+
+        // function setPlanillsa(company_id) {
+        //     var documentsHtml = $("#documents");
+
+        //     var documents = $("#documents option").map(function() {
+        //         let parent = $(this).data('parent');
+        //         if (parent == company_id) {
+        //             return $(this).val();
+        //         }
+        //         // console.log($(this).val(), 'parent ', parent);
+        //         // return $(this).val();
+        //     }).get();
+        //     documentsHtml.empty();
+        //     console.log(documents);
+        //     $.each(documents, function(index, value) {
+        //         documentsHtml.append($("<option>").attr('id', value)) //text(value));
         //     });
-        // });
-        // let v = $(".f-currency").text()
-        // console.log(v);
-        // $(".f-currency").html(formatMyMoney($(".f-currency").text()));
-        // let money = document.querySelector("#f-currency").innerHTML.trim();
-        // money = new Intl.NumberFormat("en-US", {
-        //     style: 'currency',
-        //     currency: 'BOB',
-        //     minimumFractionDigits: 2,
-        // }).format(cost);
-        // document.querySelector("#f-currency").innerHTML = money;
-        // let setFormatCurrencyBO = new Intl.NumberFormat('es-BO', {
-        //     style: 'currency',
-        //     currency: 'BOB',
-        // });
-        // Create tree object
-        // let menu = {
-        //     Number: 1,
-        //     Name: "Menu",
-        //     Children: [{
-        //         Number: 2,
-        //         Name: "Dashboard"
-        //     }, {
-        //         Number: 3,
-        //         Name: "Usuarios"
-        //     }]
+        //     // Vaciar el segundo select
+        //     // select2.empty();
+
+        //     // // Obtener las opciones correspondientes al valor seleccionado
+        //     // var opciones = opcionesPorDefecto[valor] || [];
+
+        //     // // Agregar las opciones al segundo select
+        //     // $.each(opciones, function(index, value) {
+        //     //     select2.append($("<option>").text(value));
+        //     // });
         // }
     </script>
 

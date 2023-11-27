@@ -7,8 +7,9 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="bonus" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('bonus.update', $bonus->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 <div class="card-body">
                     <div class="form-group">
                         <label for="txtCodigo">Codigo</label>

@@ -68,6 +68,11 @@ class DocumentsController extends Controller
         //
     }
 
+    public function getDocumentsByCompany($company_id){
+        $docs = Document::where('company_id',$company_id)->get();
+        return response()->json(['documents' => $docs]);
+    }
+
     /**
      * Update the specified resource in storage.
      *
