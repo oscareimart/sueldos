@@ -18,4 +18,9 @@ class Company extends Model
     {
         return $this->belongsToMany(Bonus::class, 'companybonuses', 'company_id', 'bonus_id');
     }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
 }

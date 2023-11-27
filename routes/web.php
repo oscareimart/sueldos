@@ -72,3 +72,4 @@ Route::post('/generatePdf', [App\Http\Controllers\DomPdfController::class, 'gene
 Route::post('/get-menu', [App\Http\Controllers\RoleController::class, 'getMenu'])->name('get-menu')->middleware(['auth','init.config']);
 
 Route::get('/get-docs-by-company/{company_id}', [App\Http\Controllers\DocumentsController::class, 'getDocumentsByCompany'])->name('getDocsByCompany')->middleware(['auth']);
+Route::get('/get-last-companies', [App\Http\Controllers\CompanyController::class, 'getTenLastCompanies'])->name('getTenLastCompanies')->middleware(['auth']);

@@ -90,6 +90,29 @@
                     </div>
                     <!-- ./col -->
                 </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-danger">
+                            <div class="card-header">
+                                <h3 class="card-title">PLanillas por Empresas</h3>
+
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="donutChart"
+                                    style="min-height: 400px; height: 400px; max-height: 400px; max-width: 100%;"></canvas>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
         <!-- /.content -->

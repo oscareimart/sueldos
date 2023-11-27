@@ -262,6 +262,12 @@
     <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="plugins/chart.js/Chart.min.js"></script>
+    <!-- jQuery Mapael -->
+    <script src="plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+    <script src="plugins/raphael/raphael.min.js"></script>
+    <script src="plugins/jquery-mapael/jquery.mapael.min.js"></script>
+    <script src="plugins/jquery-mapael/maps/usa_states.min.js"></script>
     <script>
         // $(document).ready(function() {
         //     genReport() {
@@ -583,6 +589,129 @@
             });
             // setPlanillas(value);
         })
+        //-------------
+        //- DONUT CHART -
+        //-------------
+        // Get context with jQuery - using jQuery's .get() method.
+        function getCompanies() {
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: '/get-last-companies',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        // Trabaja con la respuesta aquí si es necesario
+                        // console.log(response);
+                        resolve(response);
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                        reject(error);
+                    }
+                });
+            });
+        }
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        // Función para asignar colores aleatorios a cada elemento en un array
+        function assignRandomColors(array) {
+            return array.map(function(element) {
+                return {
+                    value: element,
+                    color: getRandomColor()
+                };
+            });
+        }
+        getCompanies().then(function(response) {
+            // Trabajar con la respuesta (response) aquí
+            updateDonutChart(response);
+        }).catch(function(error) {
+            console.error('Error:', error);
+        });
+
+        function updateDonutChart(companies) {
+            console.log(companies);
+            var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
+
+            // Obtener nombres de empresas y datos para el gráfico
+            var companyNames = companies.map(function(company) {
+                return company.business_name; // Ajusta esto según la estructura de tu respuesta AJAX
+            });
+            console.log(companyNames);
+            let colors = assignRandomColors(companyNames);
+            let documents = companies.map(e => e.documents.length)
+            console.log(documents);
+            // console.log('coloer ', colors.map(e => e.color));
+            var donutData = {
+                labels: companyNames,
+                datasets: [{
+                    data: documents,
+                    backgroundColor: colors.map(e => e.color),
+                }]
+            };
+
+            var donutOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+            };
+
+            new Chart(donutChartCanvas, {
+                type: 'doughnut',
+                data: donutData,
+                options: donutOptions
+            })
+            // Crear o actualizar el gráfico
+            // if (window.donutChart) {
+            //     // Si ya existe el gráfico, actualiza los datos
+            //     window.donutChart.data = donutData;
+            //     // window.donutChart.update();
+            // } else {
+            //     // Si el gráfico no existe, créalo
+            //     window.donutChart = new Chart(donutChartCanvas, {
+            //         type: 'doughnut',
+            //         data: donutData,
+            //         options: donutOptions
+            //     });
+            // }
+        }
+        // var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+        // var donutData = {
+        //     labels: [
+        //         'Chrome',
+        //         'IE',
+        //         'FireFox',
+        //         'Safari',
+        //         'Opera',
+        //         'Navigator',
+        //     ],
+        //     datasets: [{
+        //         data: [700, 500, 400, 600, 300, 100],
+        //         backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+        //     }]
+        // }
+        // var donutOptions = {
+        //     maintainAspectRatio: false,
+        //     responsive: true,
+        // }
+        //Create pie or douhnut chart
+        // You can switch between pie and douhnut using the method below.
+        // new Chart(donutChartCanvas, {
+        //     type: 'doughnut',
+        //     data: donutData,
+        //     options: donutOptions
+        // })
+
 
         // function setPlanillsa(company_id) {
         //     var documentsHtml = $("#documents");

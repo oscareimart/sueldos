@@ -80,6 +80,15 @@ class CompanyController extends Controller
         //
     }
 
+    public function getTenLastCompanies()
+    {
+        $companies = Company::latest()
+            ->take(10)
+            ->with('documents') // Carga la relación 'documents'
+            ->get();
+        return $companies;
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

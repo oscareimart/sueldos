@@ -480,9 +480,18 @@
 
 
                                                                 @if (isset($emp->TG))
-                                                                    <td class="bg-green-2 f-currency">
+                                                                    @if ($emp->TG > 10824)
+                                                                        <td class="bg-blue-1 f-currency">
+                                                                            <strong>{{ $emp->TG }}</strong>
+                                                                        </td>
+                                                                    @else
+                                                                        <td class="bg-green-2 f-currency">
+                                                                            <strong>{{ $emp->TG }}</strong>
+                                                                        </td>
+                                                                    @endif
+                                                                    {{-- <td class="bg-green-2 f-currency">
                                                                         <strong>{{ $emp->TG }}</strong>
-                                                                    </td>
+                                                                    </td> --}}
                                                                 @endif
 
                                                                 @if (isset($emp->DAFP))
