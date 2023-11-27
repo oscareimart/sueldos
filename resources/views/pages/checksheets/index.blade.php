@@ -222,8 +222,6 @@
                                                     @if (isset($documentCsv))
                                                         @foreach ($documentCsv as $key => $e)
                                                             <tr>
-
-                                                                {{-- <td>{{ $key + 1 }}</td> --}}
                                                                 <td>{{ $e->nombre }}</td>
                                                                 <td>{{ $e->ci . $e->extension }}</td>
                                                                 <td>{{ $e->FI }}</td>
@@ -247,7 +245,7 @@
                                                                 {{-- <td>{{ $e->totalHE }}</td> --}}
                                                             </tr>
                                                             @php
-                                                                $totalHBE_ += $e->HBE;
+                                                                $totalHBE_ += floatval(str_replace(',', '.', $e->HBE)); //$e->HBE;
                                                                 $totalBA_ += floatval(str_replace(',', '.', $e->BA));
                                                                 $totalBRN_ += floatval(str_replace(',', '.', $e->BRN));
                                                                 $totalBHE_ += floatval(str_replace(',', '.', $e->BHE));
